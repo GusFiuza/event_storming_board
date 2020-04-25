@@ -8,6 +8,7 @@ function carregamento() {
 function printCard(dados) {
   card = document.createElement('div')
   cardHeader = document.createElement('div')
+  cardTitulo = document.createElement('div')
   cardEditar = document.createElement('div')
   cardExcluir = document.createElement('div')
   cardBody = document.createElement('div')
@@ -16,14 +17,18 @@ function printCard(dados) {
   card.setAttribute('style', dados.card_style)
   cardHeader.setAttribute('id', 'card' + dados.card_id + 'header')
   cardHeader.setAttribute('class', 'cardheader')
+  cardTitulo.setAttribute('class', 'cardtitle')
   cardEditar.setAttribute('class', 'cardeditar')
-  cardEditar.textContent = '...'
   cardExcluir.setAttribute('id', 'card' + dados.card_id + 'excluir')
   cardExcluir.setAttribute('class', 'cardexcluir')
-  cardExcluir.textContent = 'x'
   cardBody.setAttribute('id', 'card' + dados.card_id + 'body')
   cardBody.setAttribute('class', 'cardbody')
-  cardBody.textContent = dados.card_text
+  if (dados.card_class == 'context') {
+    cardTitulo.textContent = dados.card_text
+  } else {
+    cardBody.textContent = dados.card_text
+  }
+  cardHeader.appendChild(cardTitulo)
   cardHeader.appendChild(cardEditar)
   cardHeader.appendChild(cardExcluir)
   card.appendChild(cardHeader)
@@ -50,6 +55,7 @@ function newCard(ev) {
       idCard = manterAPI('post',dadosCard,0)
       card = document.createElement('div')
       cardHeader = document.createElement('div')
+      cardTitulo = document.createElement('div')
       cardEditar = document.createElement('div')
       cardExcluir = document.createElement('div')
       cardBody = document.createElement('div')
@@ -57,14 +63,14 @@ function newCard(ev) {
       card.setAttribute('class', 'event')
       cardHeader.setAttribute('id', 'card' + idCard.seq + 'header')
       cardHeader.setAttribute('class', 'cardheader')
+      cardTitulo.setAttribute('class', 'cardtitle')
       cardEditar.setAttribute('class', 'cardeditar')
-      cardEditar.textContent = '...'
       cardExcluir.setAttribute('id', 'card' + idCard.seq + 'excluir')
       cardExcluir.setAttribute('class', 'cardexcluir')
-      cardExcluir.textContent = 'x'
       cardBody.setAttribute('id', 'card' + idCard.seq + 'body')
       cardBody.setAttribute('class', 'cardbody')
       cardBody.textContent = texto
+      cardHeader.appendChild(cardTitulo)
       cardHeader.appendChild(cardEditar)
       cardHeader.appendChild(cardExcluir)
       card.appendChild(cardHeader)
@@ -79,7 +85,11 @@ function newCard(ev) {
     texto = prompt('Digite o novo texto')
     if (texto != null) {
       console.log('Alterei o texto')
-      ev.target.parentElement.parentElement.children[1].textContent = texto
+      if (ev.target.parentElement.parentElement.getAttribute('class') == 'context') {
+        ev.target.parentElement.children[0].textContent = texto
+      } else {
+        ev.target.parentElement.parentElement.children[1].textContent = texto
+      }
       dadosCard = `card_class=` + ev.target.parentElement.parentElement.getAttribute('class') + `&
       card_style=`+ ev.target.parentElement.parentElement.getAttribute('style') + `&
       card_text=`+ texto
@@ -98,8 +108,17 @@ function newCard(ev) {
       dadosCard = `card_class=aggregate&
       card_style=`+ ev.target.parentElement.getAttribute('style') + `&
       card_text=`+ ev.target.textContent 
+    } else if (ev.target.parentElement.getAttribute('class') == 'aggregate') {
+      ev.target.parentElement.setAttribute('class', 'context')
+      ev.target.parentElement.children[0].children[0].textContent = ev.target.textContent
+      dadosCard = `card_class=context&
+      card_style=`+ ev.target.parentElement.getAttribute('style') + `&
+      card_text=`+ ev.target.textContent 
+      ev.target.textContent = ''
     } else {
       ev.target.parentElement.setAttribute('class', 'event')
+      ev.target.textContent = ev.target.parentElement.children[0].children[0].textContent
+      ev.target.parentElement.children[0].children[0].textContent = ''
       dadosCard = `card_class=event&
       card_style=`+ ev.target.parentElement.getAttribute('style') + `&
       card_text=`+ ev.target.textContent 
@@ -154,12 +173,18 @@ function dragElement(elmnt) {
     document.onmouseup = null;
     document.onmousemove = null;
 
-    if (e.target.parentElement.getAttribute('style') != null) {
+    if (e.target.parentElement.parentElement.getAttribute('style') != null) {
       console.log('Alterei a posição')
-      dadosCard = `card_class=`+ e.target.parentElement.getAttribute('class') + `&
-      card_style=`+ e.target.parentElement.getAttribute('style') + `&
-      card_text=`+ e.target.parentElement.textContent.substring(4)
-      manterAPI('put',dadosCard,e.target.parentElement.id.replace("card", ""))
+      if (e.target.parentElement.getAttribute('style') == 'context') {
+        console.log(e.target.children[0].id)
+        texto = e.target.children[0].textContent
+      } else {
+        texto = e.target.parentElement.parentElement.textContent
+      }
+      dadosCard = `card_class=`+ e.target.parentElement.parentElement.getAttribute('class') + `&
+      card_style=`+ e.target.parentElement.parentElement.getAttribute('style') + `&
+      card_text=`+ e.target.parentElement.parentElement.textContent
+      manterAPI('put',dadosCard,e.target.parentElement.parentElement.id.replace("card", ""))
     }
   }
 }

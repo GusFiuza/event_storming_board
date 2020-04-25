@@ -3,39 +3,14 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>Event Storming</title>
+        <title>Event storming digital board</title>
         <link rel="stylesheet" href="css/reset.css">
         <link rel="stylesheet" href="css/index.css">
-        <link rel="icon" type="image/png" href="img/cerebro.jpeg" />
+        <link rel="icon" type="image/png" href="img/storm.png" />
     </head>
     <script src="js/api.js"></script>
     <script src="js/index.js"></script>
     <body id="board" onclick="newCard(event)">
-        <div id="seletor"></div>
-        <canvas id="quadro"></canvas>
     </body>
     <script>carregamento()</script>
-    <script>
-        document.getElementById("quadro").setAttribute("width", window.innerWidth - 60)
-        document.getElementById("quadro").setAttribute("height", window.innerHeight - 60)
-    
-        ctx = quadro.getContext("2d")
-        desenhando = false
-    
-        quadro.onmousedown = function (evt) {
-            ctx.moveTo(evt.clientX - 30, evt.clientY - 30)
-            desenhando = true
-        }
-    
-        quadro.onmouseup = function () {
-            desenhando = false
-        }
-    
-        quadro.onmousemove = function (evt) {
-            if (desenhando) {
-                ctx.lineTo(evt.clientX - 30, evt.clientY - 30)
-                ctx.stroke()
-            }
-        }
-    </script>
 </html>
