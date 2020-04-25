@@ -1,0 +1,28 @@
+version: "3.7"
+
+services: 
+    backend:
+        container_name: node
+        image: node
+        working_dir: /usr/src/app
+        volumes: 
+            - ./backend:/usr/src/app
+        command: 
+            npm start
+        ports: 
+            - 8002:3000
+        networks: 
+            - event-tool
+    eventStorming:
+        container_name: board
+        image: nginx
+        volumes: 
+            - ./frontend/:/usr/share/nginx/html:ro
+        ports: 
+            - 80:80
+        networks: 
+            - event-tool
+
+networks: 
+    event-tool:
+        driver: bridge
