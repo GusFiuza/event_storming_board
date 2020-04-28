@@ -1,12 +1,12 @@
 frontendHost = 'http://' + window.location.hostname + ':' + window.location.port + '/'
 backendHost = 'http://' + window.location.hostname + ':8002/'
 
-function manterAPI(metodo, objeto, identificador) {
+function manterAPI(metodo, modelo, objeto, identificador) {
     Httpreq = new XMLHttpRequest() 
     if (identificador == 0) {
-        Httpreq.open(metodo, backendHost + 'card', false)
+        Httpreq.open(metodo, backendHost + modelo, false)
     } else {
-        Httpreq.open(metodo, backendHost + 'card/' + identificador, false)
+        Httpreq.open(metodo, backendHost + modelo + '/' + identificador, false)
     }
     Httpreq.setRequestHeader('content-type', 'application/x-www-form-urlencoded')
     if (objeto == '') {
@@ -17,12 +17,12 @@ function manterAPI(metodo, objeto, identificador) {
     return JSON.parse(Httpreq.responseText)
 }
 
-function consultarAPI(identificador) {
+function consultarAPI(modelo, identificador) {
     Httpreq = new XMLHttpRequest()
     if (identificador == 0) {
-        Httpreq.open("GET", backendHost + 'card', false)
+        Httpreq.open("GET", backendHost + modelo, false)
     } else {
-        Httpreq.open("GET", backendHost + 'card/' + identificador, false)
+        Httpreq.open("GET", backendHost + modelo + '/' + identificador, false)
     }
     Httpreq.setRequestHeader('content-type', 'application/x-www-form-urlencoded')
     Httpreq.send()

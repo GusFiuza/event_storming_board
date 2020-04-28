@@ -10,7 +10,11 @@
     </head>
     <script src="js/api.js"></script>
     <script src="js/index.js"></script>
-    <body id="board" onclick="newCard(event)">
+    <body id="board" style="zoom: 1" onclick="newCard(event)">
+        <div id="toolBar" class="barraFerramenta" style="zoom: 1">
+            <div class="zoomIn" onclick="zoomin()"></div>
+            <div class="zoomOut" onclick="zoomout()"></div>
+        </div>
     </body>
     <script>carregamento()</script>
 </html>
