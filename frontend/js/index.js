@@ -1,15 +1,37 @@
+classes = ['event', 'command', 'aggregate', 'condition', 'context']
+
+function clicou(ev) {
+  if (ev.target.getAttribute('class') != null) {
+    if (classes.includes(ev.target.getAttribute('class'))) {
+      console.log(ev.target)
+    }
+  }
+}
+
+function soltou(ev) {
+  if (ev.target.getAttribute('class') != null) {
+    if (classes.includes(ev.target.getAttribute('class'))) {
+      console.log(ev.target)
+    }
+  }
+}
+
 function zoomin() {
-  document.body.style.zoom = parseFloat(document.body.style.zoom) + .1
-  document.getElementById('toolBar').style.zoom = 1 / parseFloat(document.body.style.zoom)
-  manterAPI('put', 'parm', 'parm_value=' + document.body.style.zoom, 1)
-  manterAPI('put', 'parm', 'parm_value=' + document.getElementById('toolBar').style.zoom, 2)
+  novoZoom = consultarAPI('parm', 1) + .1
+  document.body.style.transform = 'scale(' + novoZoom + ')'
+  document.getElementById('toolBar').style.transform = 'scale(' + (1 / novoZoom) + ')'
+  manterAPI('put', 'parm', 'parm_value=' + novoZoom, 1)
+  manterAPI('put', 'parm', 'parm_value=' + (1 / novoZoom), 2)
+  document.getElementById('toolBar').children[1].textContent = parseInt(novoZoom * 100) + '%'
 }
 
 function zoomout() {
-  document.body.style.zoom = parseFloat(document.body.style.zoom) - .1
-  document.getElementById('toolBar').style.zoom = 1 / parseFloat(document.body.style.zoom)
-  manterAPI('put', 'parm', 'parm_value=' + document.body.style.zoom, 1)
-  manterAPI('put', 'parm', 'parm_value=' + document.getElementById('toolBar').style.zoom, 2)
+  novoZoom = consultarAPI('parm', 1) - .1
+  document.body.style.transform = 'scale(' + novoZoom + ')'
+  document.getElementById('toolBar').style.transform = 'scale(' + (1 / novoZoom) + ')'
+  manterAPI('put', 'parm', 'parm_value=' + novoZoom, 1)
+  manterAPI('put', 'parm', 'parm_value=' + (1 / novoZoom), 2)
+  document.getElementById('toolBar').children[1].textContent = parseInt(novoZoom * 100) + '%'
 }
 
 function carregamento() {
@@ -17,8 +39,9 @@ function carregamento() {
   for (i = 0; i < dados.length; i++) {
     criaCard(dados[i].card_id, dados[i].card_class, dados[i].card_style, dados[i].card_text)
   }
-  document.body.style.zoom = consultarAPI('parm', 1)
-  document.getElementById('toolBar').style.zoom = consultarAPI('parm', 2)
+  document.body.style.transform = 'scale(' + consultarAPI('parm', 1) + ')'
+  document.getElementById('toolBar').style.transform = 'scale(' + consultarAPI('parm', 2) + ')'
+  document.getElementById('toolBar').children[1].textContent = parseInt(consultarAPI('parm', 1) * 100) + '%'
 }
 
 function criaCard(id, classe, estilo, texto) {
@@ -41,12 +64,12 @@ function criaCard(id, classe, estilo, texto) {
   cardExcluir.setAttribute('id', 'card' + id + 'excluir')
   cardExcluir.setAttribute('class', 'cardexcluir')
   cardBody.setAttribute('id', 'card' + id + 'body')
-  cardBody.setAttribute('class', 'cardbody')
   if (classe == 'context') {
-    cardTitulo.textContent = texto
+    cardBody.setAttribute('class', 'cardbodycontext')
   } else {
-    cardBody.textContent = texto
+    cardBody.setAttribute('class', 'cardbody')
   }
+  cardBody.textContent = texto
   cardHeader.appendChild(cardOrdem)
   cardHeader.appendChild(cardTitulo)
   cardHeader.appendChild(cardEditar)
@@ -57,13 +80,21 @@ function criaCard(id, classe, estilo, texto) {
   dragElement(document.getElementById('card' + id))
 }
 
+function montaDadosCard(card) {
+  card_class = card.getAttribute('class')
+  card_style = card.getAttribute('style')
+  card_text = card.children[1].textContent
+  dadosCard = 'card_class=' + card_class + '&card_style=' + card_style + '&card_text=' + card_text
+  return dadosCard
+}
+
 function newCard(ev) {
   if (ev.target.id == 'board') {
     console.log('Novo card')
     card_text = prompt('Digite o texto do post-it:')
     if (card_text != null) {
       card_class = 'event'
-      card_style = 'z-index: ' + document.body.childElementCount + '; top: ' + ev.clientY + 'px; left:' + ev.clientX + 'px;'
+      card_style = 'z-index: ' + (document.body.childElementCount - 1) + '; top: ' + ev.clientY + 'px; left:' + ev.clientX + 'px;'
       dadosCard = 'card_class=' + card_class + '&card_style=' + card_style + '&card_text=' + card_text
       card_id = manterAPI('post', 'card', dadosCard, 0)
       criaCard(card_id.seq, card_class, card_style, card_text)
@@ -76,15 +107,7 @@ function newCard(ev) {
       if (parseInt(ordem) > -1 & parseInt(ordem) < 100) {
         console.log('Alterei a ordem')
         card.style.zIndex = parseInt(ordem)
-        card_class = card.getAttribute('class')
-        card_style = card.getAttribute('style')
-        if (card_class == 'context') {
-          card_text = card.children[0].children[1].textContent
-        } else {
-          card_text = card.textContent
-        }
-        dadosCard = 'card_class=' + card_class + '&card_style=' + card_style + '&card_text=' + card_text
-        manterAPI('put', 'card', dadosCard, card.id.replace("card", ""))
+        manterAPI('put', 'card', montaDadosCard(card), card.id.replace("card", ""))
         card.children[0].children[0].textContent = ordem
       } else {
         alert('Digite um valor válido!')
@@ -96,42 +119,28 @@ function newCard(ev) {
     texto = prompt('Digite o novo texto')
     if (texto != null) {
       console.log('Alterei o texto')
-      if (card.getAttribute('class') == 'context') {
-        card.children[0].children[1].textContent = texto
-      } else {
-        card.children[1].textContent = texto
-      }
-      card_class = card.getAttribute('class')
-      card_style = card.getAttribute('style')
-      dadosCard = 'card_class=' + card_class + '&card_style=' + card_style + '&card_text=' + texto
-      manterAPI('put', 'card', dadosCard, card.id.replace("card", ""))
+      card.children[1].textContent = texto
+      manterAPI('put', 'card', montaDadosCard(card), card.id.replace("card", ""))
     }
   }
-  if (ev.target.getAttribute('class') == 'cardbody') {
+  if (ev.target.getAttribute('class').substring(0, 8) == 'cardbody') {
     card = ev.target.parentElement
     console.log('Cor do card')
     if (card.getAttribute('class') == 'event') {
       card_class = 'command'
-      card_text = card.children[1].textContent
-    } else if (ev.target.parentElement.getAttribute('class') == 'command') {
+    } else if (card.getAttribute('class') == 'command') {
       card_class = 'aggregate'
-      card_text = card.children[1].textContent
-    } else if (ev.target.parentElement.getAttribute('class') == 'aggregate') {
+    } else if (card.getAttribute('class') == 'aggregate') {
+      card_class = 'condition'
+    } else if (card.getAttribute('class') == 'condition') {
       card_class = 'context'
-      card_text = card.children[1].textContent
-      card.children[0].children[1].textContent = card_text
-      card.children[1].textContent = ''
+      card.children[1].setAttribute('class', 'cardbodycontext')
     } else {
       card_class = 'event'
-      card_text = card.children[0].children[1].textContent
-      card.children[1].textContent = card_text
-      card.children[0].children[1].textContent = ''
+      card.children[1].setAttribute('class', 'cardbody')
     }
     card.setAttribute('class', card_class)
-    card_class = card.getAttribute('class')
-    card_style = card.getAttribute('style')
-    dadosCard = 'card_class=' + card_class + '&card_style=' + card_style + '&card_text=' + card_text
-    manterAPI('put', 'card', dadosCard, card.id.replace("card", ""))
+    manterAPI('put', 'card', montaDadosCard(card), card.id.replace("card", ""))
   }
   if (ev.target.getAttribute('class') == 'cardexcluir') {
     card = ev.target.parentElement.parentElement
@@ -182,15 +191,7 @@ function dragElement(elmnt) {
     if (e.target.parentElement.parentElement.getAttribute('style') != null) {
       card = e.target.parentElement.parentElement
       console.log('Alterei a posição')
-      if (card.getAttribute('class') == 'context') {
-        card_text = card.children[0].children[1].textContent
-      } else {
-        card_text = card.children[1].textContent
-      }
-      card_class = card.getAttribute('class')
-      card_style = card.getAttribute('style')
-      dadosCard = 'card_class=' + card_class + '&card_style=' + card_style + '&card_text=' + card_text
-      manterAPI('put', 'card', dadosCard, card.id.replace("card", ""))
+      manterAPI('put', 'card', montaDadosCard(card), card.id.replace("card", ""))
     }
   }
 }

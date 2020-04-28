@@ -1,20 +1,24 @@
 <!doctype html>
 
-<html>
-    <head>
-        <meta charset="utf-8">
-        <title>Event storming digital board</title>
-        <link rel="stylesheet" href="css/reset.css">
-        <link rel="stylesheet" href="css/index.css">
-        <link rel="icon" type="image/png" href="img/storm.png" />
-    </head>
-    <script src="js/api.js"></script>
-    <script src="js/index.js"></script>
-    <body id="board" style="zoom: 1" onclick="newCard(event)">
-        <div id="toolBar" class="barraFerramenta" style="zoom: 1">
-            <div class="zoomIn" onclick="zoomin()"></div>
-            <div class="zoomOut" onclick="zoomout()"></div>
-        </div>
-    </body>
-    <script>carregamento()</script>
+<html onmousedown="clicou(event)" onmouseup="soltou(event)">
+
+<head>
+    <meta charset="utf-8">
+    <title>Event storming digital board</title>
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="icon" type="image/png" href="img/storm.png" />
+</head>
+<script src="js/api.js"></script>
+<script src="js/index.js"></script>
+
+<body id="board" onclick="newCard(event)" style="transform: scale(1); transform-origin: top left;">
+    <div id="toolBar" class="barraFerramenta" style="left: 10px; transform: scale(1); transform-origin: top left;">
+        <div class="zoomIn" onclick="zoomin()"></div>
+        <div class="zoomScale">100%</div>
+        <div class="zoomOut" onclick="zoomout()"></div>
+    </div>
+</body>
+<script>carregamento()</script>
+
 </html>
