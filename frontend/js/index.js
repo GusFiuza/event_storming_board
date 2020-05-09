@@ -1,36 +1,22 @@
 classes = ['event', 'command', 'aggregate', 'condition', 'context']
 
-function clicou(ev) {
-  if (ev.target.getAttribute('class') != null) {
-    if (classes.includes(ev.target.getAttribute('class'))) {
-      console.log(ev.target)
-    }
-  }
-}
-
-function soltou(ev) {
-  if (ev.target.getAttribute('class') != null) {
-    if (classes.includes(ev.target.getAttribute('class'))) {
-      console.log(ev.target)
-    }
-  }
-}
-
 function zoomin() {
   novoZoom = consultarAPI('parm', 1) + .1
+  fator = 1/novoZoom
   document.body.style.transform = 'scale(' + novoZoom + ')'
-  document.getElementById('toolBar').style.transform = 'scale(' + (1 / novoZoom) + ')'
+  document.getElementById('toolBar').style.transform = 'scale(' + (fator) + ')'
   manterAPI('put', 'parm', 'parm_value=' + novoZoom, 1)
-  manterAPI('put', 'parm', 'parm_value=' + (1 / novoZoom), 2)
+  manterAPI('put', 'parm', 'parm_value=' + (fator), 2)
   document.getElementById('toolBar').children[1].textContent = parseInt(novoZoom * 100) + '%'
 }
 
 function zoomout() {
   novoZoom = consultarAPI('parm', 1) - .1
+  fator = 1/novoZoom
   document.body.style.transform = 'scale(' + novoZoom + ')'
-  document.getElementById('toolBar').style.transform = 'scale(' + (1 / novoZoom) + ')'
+  document.getElementById('toolBar').style.transform = 'scale(' + (fator) + ')'
   manterAPI('put', 'parm', 'parm_value=' + novoZoom, 1)
-  manterAPI('put', 'parm', 'parm_value=' + (1 / novoZoom), 2)
+  manterAPI('put', 'parm', 'parm_value=' + (fator), 2)
   document.getElementById('toolBar').children[1].textContent = parseInt(novoZoom * 100) + '%'
 }
 
@@ -40,7 +26,8 @@ function carregamento() {
     criaCard(dados[i].card_id, dados[i].card_class, dados[i].card_style, dados[i].card_text)
   }
   document.body.style.transform = 'scale(' + consultarAPI('parm', 1) + ')'
-  document.getElementById('toolBar').style.transform = 'scale(' + consultarAPI('parm', 2) + ')'
+  fator = consultarAPI('parm', 2)
+  document.getElementById('toolBar').style.transform = 'scale(' + fator + ')'
   document.getElementById('toolBar').children[1].textContent = parseInt(consultarAPI('parm', 1) * 100) + '%'
 }
 
@@ -123,24 +110,26 @@ function newCard(ev) {
       manterAPI('put', 'card', montaDadosCard(card), card.id.replace("card", ""))
     }
   }
-  if (ev.target.getAttribute('class').substring(0, 8) == 'cardbody') {
-    card = ev.target.parentElement
-    console.log('Cor do card')
-    if (card.getAttribute('class') == 'event') {
-      card_class = 'command'
-    } else if (card.getAttribute('class') == 'command') {
-      card_class = 'aggregate'
-    } else if (card.getAttribute('class') == 'aggregate') {
-      card_class = 'condition'
-    } else if (card.getAttribute('class') == 'condition') {
-      card_class = 'context'
-      card.children[1].setAttribute('class', 'cardbodycontext')
-    } else {
-      card_class = 'event'
-      card.children[1].setAttribute('class', 'cardbody')
+  if (ev.target.getAttribute('class') != null) {
+    if (ev.target.getAttribute('class').substring(0, 8) == 'cardbody') {
+      card = ev.target.parentElement
+      console.log('Cor do card')
+      if (card.getAttribute('class') == 'event') {
+        card_class = 'command'
+      } else if (card.getAttribute('class') == 'command') {
+        card_class = 'aggregate'
+      } else if (card.getAttribute('class') == 'aggregate') {
+        card_class = 'condition'
+      } else if (card.getAttribute('class') == 'condition') {
+        card_class = 'context'
+        card.children[1].setAttribute('class', 'cardbodycontext')
+      } else {
+        card_class = 'event'
+        card.children[1].setAttribute('class', 'cardbody')
+      }
+      card.setAttribute('class', card_class)
+      manterAPI('put', 'card', montaDadosCard(card), card.id.replace("card", ""))
     }
-    card.setAttribute('class', card_class)
-    manterAPI('put', 'card', montaDadosCard(card), card.id.replace("card", ""))
   }
   if (ev.target.getAttribute('class') == 'cardexcluir') {
     card = ev.target.parentElement.parentElement
@@ -151,47 +140,40 @@ function newCard(ev) {
 }
 
 function dragElement(elmnt) {
-  var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-  if (document.getElementById(elmnt.id + "header")) {
-    // if present, the header is where you move the DIV from:
-    document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
-  } else {
-    // otherwise, move the DIV from anywhere inside the DIV:
-    elmnt.onmousedown = dragMouseDown;
-  }
-  function dragMouseDown(e) {
-    e = e || window.event;
+  
+  var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0
+  document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown
+
+  function dragMouseDown() {
+    e = window.event;
     e.preventDefault();
-    // get the mouse cursor position at startup:
     pos3 = e.clientX;
     pos4 = e.clientY;
     document.onmouseup = closeDragElement;
-    // call a function whenever the cursor moves:
     document.onmousemove = elementDrag;
   }
-  function elementDrag(e) {
-    e = e || window.event;
+
+  function elementDrag() {
+    e = window.event;
     e.preventDefault();
-    // calculate the new cursor position:
     pos1 = pos3 - e.clientX;
     pos2 = pos4 - e.clientY;
     pos3 = e.clientX;
     pos4 = e.clientY;
-    // set the element's new position:
-    elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
-    elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+    elmnt.style.top = (elmnt.offsetTop - pos2*fator) + "px";
+    elmnt.style.left = (elmnt.offsetLeft - pos1*fator) + "px";
   }
-  function closeDragElement(e) {
-    e = e || window.event;
+
+  function closeDragElement() {
+    e = window.event;
     e.preventDefault();
-    // stop moving when mouse button is released:
     document.onmouseup = null;
     document.onmousemove = null;
-
     if (e.target.parentElement.parentElement.getAttribute('style') != null) {
       card = e.target.parentElement.parentElement
       console.log('Alterei a posição')
       manterAPI('put', 'card', montaDadosCard(card), card.id.replace("card", ""))
     }
   }
+
 }
