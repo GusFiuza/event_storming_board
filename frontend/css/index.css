@@ -134,9 +134,7 @@ body {
     align-items: center;
     width: 100%;
     height: 30px;
-    cursor: move;
     text-align: left;
-    border-bottom: 1px solid black;
 }
 
 .cardtitle {
@@ -157,6 +155,21 @@ body {
     height: 30px;
     font-family: 'Courier New', Courier, monospace;
     font-size: 18px;
+    font-weight: bolder;
+}
+
+.cardcor {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+    background-image: url("../img/cor.png");
+    background-size: 20px;
+    background-position: center;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    font-family: 'Courier New', Courier, monospace;
     font-weight: bolder;
 }
 
@@ -198,6 +211,7 @@ body {
     height: 100%;
     font-family: 'Courier New', Courier, monospace;
     font-weight: bolder;
+    cursor: move;
 }
 
 .cardbodycontext {
