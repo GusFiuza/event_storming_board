@@ -1,8 +1,12 @@
 frontendHost = 'http://' + window.location.hostname + ':' + window.location.port + '/'
 backendHost = 'http://' + window.location.hostname + ':8002/'
+backendWs = 'ws://' + location.host + ':8002/ws'
 
-url = 'ws://' + location.host + ':8002/ws'
-socket = new WebSocket(url);
+console.log(frontendHost)
+console.log(backendHost)
+console.log(backendWs)
+
+socket = new WebSocket(backendWs);
 
 function propagaMudanca(objeto, acao) {
     socket.send(`${objeto}-${acao}`)
@@ -10,7 +14,13 @@ function propagaMudanca(objeto, acao) {
 
 socket.onmessage = function (event) {
     mensagemRecebida = event.data.split('-')
-    if (mensagemRecebida[1] == 'C') {
+    if (mensagemRecebida[1] == 'Z') {
+        novoZoom = parseFloat(mensagemRecebida[0])
+        fator = 1/novoZoom
+        document.body.style.transform = 'scale(' + novoZoom + ')'
+        document.getElementById('toolBar').style.transform = 'scale(' + (fator) + ')'
+        document.getElementById('toolBar').children[1].textContent = parseInt(novoZoom * 100) + '%'
+    } else if (mensagemRecebida[1] == 'C') {
         if (document.getElementById('card' + mensagemRecebida[0]) == null) {
             dados = consultarAPI('card', mensagemRecebida[0])
             criaCard(dados.card_id, dados.card_class, dados.card_style, dados.card_text)

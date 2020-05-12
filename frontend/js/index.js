@@ -3,6 +3,7 @@ function mouseDown(ev) {
     tamanhoCard = ev.target.style.width + ' x ' + ev.target.style.height
   }
 }
+
 function mouseUp(ev) {
   if (classes.indexOf(ev.target.getAttribute('class')) != -1) {
     card = ev.target
@@ -22,6 +23,7 @@ function zoomin() {
   manterAPI('put', 'parm', 'parm_value=' + novoZoom, 1)
   manterAPI('put', 'parm', 'parm_value=' + (fator), 2)
   document.getElementById('toolBar').children[1].textContent = parseInt(novoZoom * 100) + '%'
+  propagaMudanca(novoZoom,'Z')
 }
 
 function zoomout() {
@@ -32,6 +34,7 @@ function zoomout() {
   manterAPI('put', 'parm', 'parm_value=' + novoZoom, 1)
   manterAPI('put', 'parm', 'parm_value=' + (fator), 2)
   document.getElementById('toolBar').children[1].textContent = parseInt(novoZoom * 100) + '%'
+  propagaMudanca(novoZoom,'Z')
 }
 
 function carregamento() {
@@ -102,7 +105,7 @@ function newCard(ev) {
     card_text = prompt('Digite o texto do post-it:')
     if (card_text != null) {
       card_class = 'event'
-      card_style = 'z-index: ' + (document.body.childElementCount - 1) + '; top: ' + ev.clientY + 'px; left:' + ev.clientX + 'px;'
+      card_style = 'z-index: ' + (document.body.childElementCount - 2) + '; top: ' + ev.clientY + 'px; left:' + ev.clientX + 'px;'
       dadosCard = 'card_class=' + card_class + '&card_style=' + card_style + '&card_text=' + card_text
       card_id = manterAPI('post', 'card', dadosCard, 0)
       criaCard(card_id.seq, card_class, card_style, card_text)

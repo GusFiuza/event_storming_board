@@ -69,7 +69,7 @@ body {
     width: 200px;
     height: 130px;
     position: absolute;
-    background-color: lime;
+    background-color: rgb(255, 255, 159);
     text-align: center;
     overflow: auto;
     resize: both;
@@ -82,7 +82,7 @@ body {
     width: 200px;
     height: 130px;
     position: absolute;
-    background-color: yellow;
+    background-color: lightgreen;
     text-align: center;
     overflow: auto;
     resize: both;
@@ -108,7 +108,7 @@ body {
     width: 200px;
     height: 130px;
     position: absolute;
-    background-color: royalblue;
+    background-color: lightblue;
     text-align: center;
     overflow: auto;
     resize: both;
