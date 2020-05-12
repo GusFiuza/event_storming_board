@@ -9,6 +9,7 @@ function mouseUp(ev) {
     if (tamanhoCard != card.style.width + ' x ' + card.style.height) {
       console.log('Alterei o tamanho')
       manterAPI('put', 'card', montaDadosCard(card), card.id.replace("card", ""))
+      propagaMudanca(card.id.replace('card',''),'U')
     }
   }
 }
@@ -105,6 +106,7 @@ function newCard(ev) {
       dadosCard = 'card_class=' + card_class + '&card_style=' + card_style + '&card_text=' + card_text
       card_id = manterAPI('post', 'card', dadosCard, 0)
       criaCard(card_id.seq, card_class, card_style, card_text)
+      propagaMudanca(card_id.seq,'C')
     }
   }
   if (ev.target.getAttribute('class') == 'cardordem') {
@@ -116,6 +118,7 @@ function newCard(ev) {
         card.style.zIndex = parseInt(ordem)
         manterAPI('put', 'card', montaDadosCard(card), card.id.replace("card", ""))
         card.children[0].children[0].textContent = ordem
+        propagaMudanca(card.id.replace('card',''),'U')
       } else {
         alert('Digite um valor válido!')
       }
@@ -135,6 +138,7 @@ function newCard(ev) {
     }
     card.setAttribute('class', card_class)
     manterAPI('put', 'card', montaDadosCard(card), card.id.replace("card", ""))
+    propagaMudanca(card.id.replace('card',''),'U')
   }
   if (ev.target.getAttribute('class') == 'cardeditar') {
     card = ev.target.parentElement.parentElement
@@ -143,6 +147,7 @@ function newCard(ev) {
       console.log('Alterei o texto')
       card.children[1].textContent = texto
       manterAPI('put', 'card', montaDadosCard(card), card.id.replace("card", ""))
+      propagaMudanca(card.id.replace('card',''),'U')
     }
   }
   if (ev.target.getAttribute('class') == 'cardexcluir') {
@@ -150,6 +155,7 @@ function newCard(ev) {
     console.log('Exclui card')
     card.remove()
     manterAPI('delete', 'card', '', card.id.replace("card", ""))
+    propagaMudanca(card.id.replace('card',''),'D')
   }
 }
 
@@ -187,6 +193,7 @@ function dragElement(elmnt) {
       card = e.target.parentElement
       console.log('Alterei a posição')
       manterAPI('put', 'card', montaDadosCard(card), card.id.replace("card", ""))
+      propagaMudanca(card.id.replace('card',''),'U')
     }
   }
 
