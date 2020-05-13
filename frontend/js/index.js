@@ -157,7 +157,7 @@ function newCard(ev) {
     card_text = prompt('Digite o texto do post-it:')
     if (card_text != null) {
       card_class = 'event'
-      card_style = 'z-index: ' + (document.body.childElementCount - 2) + '; top: ' + ev.clientY + 'px; left:' + ev.clientX + 'px;'
+      card_style = 'z-index: ' + (document.body.childElementCount - 1) + '; top: ' + ev.clientY + 'px; left:' + ev.clientX + 'px;'
       dadosCard = 'card_class=' + card_class + '&card_style=' + card_style + '&card_text=' + card_text
       card_id = manterAPI('post', 'card', dadosCard, 0)
       criaCard(card_id.seq, card_class, card_style, card_text)
