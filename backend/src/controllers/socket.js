@@ -6,18 +6,15 @@ module.exports = app => {
     const clients = new Set();
     
     function onSocketConnect(ws) {
-        console.log('Nova conexão');
         clients.add(ws);
     
         ws.on('message', function(message) {
-            console.log(`Mensagem recebida: ${message}`);
             for(let client of clients) {
                 client.send(message);
             }
         })
     
         ws.on('close', function() {
-            console.log(`connection closed`);
             clients.delete(ws);
         })
     }

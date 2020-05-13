@@ -11,9 +11,54 @@ body {
     position: fixed;
     top: 10px;
     left: 10px;
-    width: 150px;
+    width: 200px;
     height: 50px;
     background-color: lightgray;
+}
+
+.snapshot {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    background-image: url("../img/snapshot.png");
+    background-size: 40px;
+    background-position: center;
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
+
+.snapshot:hover {
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+#ssMenu {
+    position: absolute; 
+    top: 10px; 
+    left: 210px; 
+    width: auto; 
+    height: auto; 
+    z-index: 100;
+}
+
+.ssItem {
+    display: flex;
+    justify-content: space-between;
+    padding-left: 5px;
+    align-items: center;
+    width: auto;
+    height: 2rem;
+    background-color: lightgray;
+}
+
+.ssItem:first-child {
+    padding-right: 5px;
+}
+
+.ssItem:hover {
+    background-color: gray;
 }
 
 .zoomIn {

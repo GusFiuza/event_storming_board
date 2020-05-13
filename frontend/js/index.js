@@ -37,8 +37,60 @@ function zoomout() {
   propagaMudanca(novoZoom,'Z')
 }
 
+function snapshot() {
+  menu = document.getElementById('ssMenu').hidden
+  if (menu) {
+    document.getElementById('ssMenu').removeAttribute('hidden')
+  } else {
+    document.getElementById('ssMenu').setAttribute('hidden','')
+  }
+}
+
+function novoSnapshot() {
+  snap_id = (document.getElementById('ssMenu').childElementCount)
+  snap_name = prompt('Digite um nome para seu snapshot:')
+  criaSnapshot(snap_id, snap_name)
+  dadosSnapshot = 'snap_id=' + snap_id + '&snap_name=' + snap_name
+  manterAPI('post', 'snap', dadosSnapshot, 0)
+  propagaMudanca(0,'S')
+}
+
+function criaSnapshot(id, nome) {
+  snapItem = document.createElement('div')
+  snapItem.setAttribute('id', 'ssItem' + id)
+  snapItem.setAttribute('class', 'ssItem')
+  snapItem.setAttribute('onclick','snapItemClick(' + id + ')')
+  snapItem.textContent = nome
+  snapExcluir = document.createElement('div')
+  snapExcluir.setAttribute('class', 'cardexcluir')
+  snapItem.appendChild(snapExcluir)
+  document.getElementById('ssMenu').appendChild(snapItem)
+  document.getElementById('ssMenu').setAttribute('hidden','')
+}
+
+function snapItemClick(id) {
+  manterAPI('put', 'parm', 'parm_value=' + id, 3)
+  propagaMudanca(id,'AS')
+}
+
+function carregaCards(id) {
+  filhos = document.body.childElementCount
+  for (i=3;i<filhos;i++) {
+    document.body.children[3].remove()
+  }
+  dados = consultarAPI('card-snapshot',consultarAPI('snap',id).snap_timestamp)
+  for (i = 0; i < dados.length; i++) {
+    criaCard(dados[i].card_id, dados[i].card_class, dados[i].card_style, dados[i].card_text)
+  }
+  document.getElementById('ssMenu').setAttribute('hidden','')
+}
+
 function carregamento() {
-  dados = consultarAPI('card', 0)
+  dados = consultarAPI('snap', 0)
+  for (i = 0; i < dados.length; i++) {
+    criaSnapshot(dados[i].snap_id, dados[i].snap_name)
+  }
+  dados = consultarAPI('card-snapshot',consultarAPI('parm', 3).snap_timestamp)
   for (i = 0; i < dados.length; i++) {
     criaCard(dados[i].card_id, dados[i].card_class, dados[i].card_style, dados[i].card_text)
   }
@@ -154,11 +206,17 @@ function newCard(ev) {
     }
   }
   if (ev.target.getAttribute('class') == 'cardexcluir') {
-    card = ev.target.parentElement.parentElement
-    console.log('Exclui card')
-    card.remove()
-    manterAPI('delete', 'card', '', card.id.replace("card", ""))
-    propagaMudanca(card.id.replace('card',''),'D')
+    if (ev.target.parentElement.getAttribute('class').substring(0,2) == 'ss') {
+      ssItem = ev.target.parentElement
+      manterAPI('delete', 'snap', '', ssItem.id.replace("ssItem", ""))
+      propagaMudanca(0,'S')
+    } else {
+      card = ev.target.parentElement.parentElement
+      console.log('Exclui card')
+      card.remove()
+      manterAPI('delete', 'card', '', card.id.replace("card", ""))
+      propagaMudanca(card.id.replace('card',''),'D')
+    }
   }
 }
 

@@ -10,6 +10,11 @@ module.exports = app => {
         Card.lista(res)
     })
 
+    app.get('/card-snapshot/:time', (req, res) => {
+        const time = req.params.time
+        Card.listaSnapshot(time, res)
+    })
+
     app.get('/card/:id', (req, res) => {
         const id = parseInt(req.params.id)
         Card.buscaPorId(id, res)
