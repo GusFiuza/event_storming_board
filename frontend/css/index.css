@@ -38,6 +38,8 @@ body {
 #ssMenu {
     width: auto; 
     height: auto; 
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bolder;
     z-index: 100;
 }
 
@@ -176,7 +178,6 @@ body {
   
 .cardheader {
     display: flex;
-    /* justify-content: flex-end; */
     align-items: center;
     width: 100%;
     height: 30px;
@@ -215,8 +216,6 @@ body {
     background-position: center;
     background-repeat: no-repeat;
     cursor: pointer;
-    font-family: 'Courier New', Courier, monospace;
-    font-weight: bolder;
 }
 
 .cardeditar {
@@ -230,8 +229,6 @@ body {
     background-position: center;
     background-repeat: no-repeat;
     cursor: pointer;
-    font-family: 'Courier New', Courier, monospace;
-    font-weight: bolder;
 }
 
 .cardexcluir {
@@ -245,8 +242,6 @@ body {
     background-position: center;
     background-repeat: no-repeat;
     cursor: pointer;
-    font-family: 'Courier New', Courier, monospace;
-    font-weight: bolder;
 }
 
 .cardbody {
