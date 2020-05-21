@@ -47,11 +47,10 @@ function snapshot() {
 }
 
 function novoSnapshot() {
-  snap_id = (document.getElementById('ssMenu').childElementCount)
   snap_name = prompt('Digite um nome para seu snapshot:')
+  dadosSnapshot = 'snap_name=' + snap_name
+  snap_id = manterAPI('post', 'snap', dadosSnapshot, 0)
   criaSnapshot(snap_id, snap_name)
-  dadosSnapshot = 'snap_id=' + snap_id + '&snap_name=' + snap_name
-  manterAPI('post', 'snap', dadosSnapshot, 0)
   propagaMudanca(0,'S')
 }
 
@@ -107,6 +106,7 @@ function criaCard(id, classe, estilo, texto) {
   cardHeader = document.createElement('div')
   cardTitulo = document.createElement('div')
   cardOrdem = document.createElement('div')
+  cardCopiar = document.createElement('div')
   cardCor = document.createElement('div')
   cardEditar = document.createElement('div')
   cardExcluir = document.createElement('div')
@@ -121,6 +121,7 @@ function criaCard(id, classe, estilo, texto) {
   cardTitulo.setAttribute('class', 'cardtitle')
   cardOrdem.setAttribute('class', 'cardordem')
   cardOrdem.textContent = estilo.substring(9, estilo.indexOf('; top'))
+  cardCopiar.setAttribute('class', 'cardduplicar')
   cardCor.setAttribute('class', 'cardcor')
   cardEditar.setAttribute('class', 'cardeditar')
   cardExcluir.setAttribute('id', 'card' + id + 'excluir')
@@ -134,6 +135,7 @@ function criaCard(id, classe, estilo, texto) {
   cardBody.textContent = texto
   cardHeader.appendChild(cardOrdem)
   cardHeader.appendChild(cardTitulo)
+  cardHeader.appendChild(cardCopiar)
   cardHeader.appendChild(cardCor)
   cardHeader.appendChild(cardEditar)
   cardHeader.appendChild(cardExcluir)
@@ -160,8 +162,8 @@ function newCard(ev) {
       card_style = 'z-index: ' + (document.body.childElementCount - 1) + '; top: ' + ev.clientY + 'px; left:' + ev.clientX + 'px;'
       dadosCard = 'card_class=' + card_class + '&card_style=' + card_style + '&card_text=' + card_text
       card_id = manterAPI('post', 'card', dadosCard, 0)
-      criaCard(card_id.seq, card_class, card_style, card_text)
-      propagaMudanca(card_id.seq,'C')
+      criaCard(card_id, card_class, card_style, card_text)
+      propagaMudanca(card_id,'C')
     }
   }
   if (ev.target.getAttribute('class') == 'cardordem') {
@@ -178,6 +180,25 @@ function newCard(ev) {
         alert('Digite um valor válido!')
       }
     }
+  }
+  if (ev.target.getAttribute('class') == 'cardduplicar') {
+    card = ev.target.parentElement.parentElement
+    console.log('Dupliquei o card')
+    card_class = card.getAttribute('class')
+    card_style = 'z-index: ' + (document.body.childElementCount - 1) + '; '
+    card_style = card_style + 'top: ' + (parseInt(card.style.top.replace('px','')) + 50) + 'px; '
+    card_style = card_style + 'left: ' + (parseInt(card.style.left.replace('px','')) + 50) + 'px; '
+    if (card.style.width != '') {
+      card_style = card_style + 'width: ' + card.style.width + '; '
+    }
+    if (card.style.height != '') {
+      card_style = card_style + 'height: ' + card.style.height + ';'
+    }
+    card_text = card.children[1].textContent
+    dadosCard = 'card_class=' + card_class + '&card_style=' + card_style + '&card_text=' + card_text
+    card_id = manterAPI('post', 'card', dadosCard, 0)
+    criaCard(card_id, card_class, card_style, card_text)
+    propagaMudanca(card_id,'C')
   }
   if (ev.target.getAttribute('class') == 'cardcor') {
     card = ev.target.parentElement.parentElement
