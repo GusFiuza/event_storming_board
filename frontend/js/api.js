@@ -11,15 +11,38 @@ function propagaMudanca(objeto, acao) {
 socket.onmessage = function (event) {
     mensagemRecebida = event.data.split('-')
     if (mensagemRecebida[1] == 'AS') {
-        carregaCards(mensagemRecebida[0])
+        carregaCards()
+    } else if (mensagemRecebida[1] == 'B') {
+        filhos = document.getElementById('bMenu').childElementCount
+        for (i=2;i<filhos;i++) {
+            document.getElementById('bMenu').children[2].remove()
+        }
+        dados = consultarAPI('board', 0)
+        for (i = 0; i < dados.length; i++) {
+            if (i == 0) {
+                document.getElementById('bItem1').textContent = dados[i].board_name
+                boardControls = document.createElement('div')
+                boardControls.setAttribute('class', 'controles')
+                boardEditar = document.createElement('div')
+                boardEditar.setAttribute('class', 'cardeditar')
+                boardControls.appendChild(boardEditar)
+                document.getElementById('bItem1').appendChild(boardControls)
+            } else {
+                criaBoard(dados[i].board_id, dados[i].board_name)
+            }
+        }
     } else if (mensagemRecebida[1] == 'S') {
         filhos = document.getElementById('ssMenu').childElementCount
-        for (i=1;i<filhos;i++) {
-            document.getElementById('ssMenu').children[1].remove()
+        for (i=2;i<filhos;i++) {
+            document.getElementById('ssMenu').children[2].remove()
         }
         dados = consultarAPI('snap', 0)
         for (i = 0; i < dados.length; i++) {
-            criaSnapshot(dados[i].snap_id, dados[i].snap_name)
+            if (i == 0) {
+                document.getElementById('ssItem1').textContent = dados[i].snap_name
+            } else {
+                criaSnapshot(dados[i].snap_id, dados[i].snap_name)
+            }
         }
     } else if (mensagemRecebida[1] == 'Z') {
         novoZoom = parseFloat(mensagemRecebida[0])

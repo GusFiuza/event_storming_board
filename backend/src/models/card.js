@@ -5,7 +5,8 @@ conexao.all(`CREATE TABLE IF NOT EXISTS card (
     card_class TEXT NOT NULL,
     card_style TEXT NOT NULL,
     card_text TEXT NOT NULL,
-    last_change TEXT NOT NULL
+    last_change TEXT NOT NULL,
+    board_id INTEGER NOT NULL
 );`, (err) => {
     if (err) {
         console.log("Erro na criação da tabela card: " + err)
@@ -21,12 +22,14 @@ conexao.all(`CREATE TABLE IF NOT EXISTS card (
                         (card_class, 
                         card_style,
                         card_text,
-                        last_change) 
+                        last_change,
+                        board_id) 
                     VALUES 
                         ('context', 
                         'z-index: 0; top: 67px; left: 163px; width: 836px; height: 348px;', 
                         'Event storming digital board',
-                        datetime('now'));`, (err) => {
+                        datetime('now'),
+                        1);`, (err) => {
                         if (err) {
                             console.log("Erro no cadastro de card: " + err)
                         }
@@ -35,12 +38,14 @@ conexao.all(`CREATE TABLE IF NOT EXISTS card (
                         (card_class, 
                         card_style,
                         card_text,
-                        last_change) 
+                        last_change,
+                        board_id) 
                     VALUES 
                         ('event', 
                         'z-index: 1; top: 136px; left: 179px;', 
                         'Event',
-                        datetime('now'));`, (err) => {
+                        datetime('now'),
+                        1);`, (err) => {
                         if (err) {
                             console.log("Erro no cadastro de card: " + err)
                         }
@@ -49,12 +54,14 @@ conexao.all(`CREATE TABLE IF NOT EXISTS card (
                         (card_class, 
                         card_style,
                         card_text,
-                        last_change) 
+                        last_change,
+                        board_id) 
                     VALUES 
                         ('command', 
                         'z-index: 2; top: 268px; left: 377px;', 
                         'Command',
-                        datetime('now'));`, (err) => {
+                        datetime('now'),
+                        1);`, (err) => {
                         if (err) {
                             console.log("Erro no cadastro de card: " + err)
                         }
@@ -63,12 +70,14 @@ conexao.all(`CREATE TABLE IF NOT EXISTS card (
                         (card_class, 
                         card_style,
                         card_text,
-                        last_change)
+                        last_change,
+                        board_id)
                     VALUES 
                         ('aggregate', 
                         'z-index: 3; top: 131px; left: 583px;', 
                         'Aggregate',
-                        datetime('now'));`, (err) => {
+                        datetime('now'),
+                        1);`, (err) => {
                         if (err) {
                             console.log("Erro no cadastro de card: " + err)
                         }
@@ -77,12 +86,14 @@ conexao.all(`CREATE TABLE IF NOT EXISTS card (
                         (card_class, 
                         card_style,
                         card_text,
-                        last_change) 
+                        last_change,
+                        board_id) 
                     VALUES 
                         ('condition', 
                         'z-index: 4; top: 269px; left: 786px;', 
                         'Condition',
-                        datetime('now'));`, (err) => {
+                        datetime('now'),
+                        1);`, (err) => {
                         if (err) {
                             console.log("Erro no cadastro de card: " + err)
                         }
@@ -95,21 +106,9 @@ conexao.all(`CREATE TABLE IF NOT EXISTS card (
 })
 
 class card {
-    lista(res) {
-        const sql = `SELECT * FROM card;`
-
-        conexao.all(sql, (erro, resultado) => {
-            if (erro) {
-                res.status(400).json(erro)
-            } else {
-                res.status(200).json(resultado)
-            }
-        });
-    }
-
-    listaSnapshot(time, res) {
-        const sql = `SELECT * FROM card where last_change <="${time}";`
-        
+    lista(board, time, res) {
+        const sql = `SELECT * FROM card where board_id = ${board} AND last_change <="${time}";`
+        console.log(sql)
         conexao.all(sql, (erro, resultado) => {
             if (erro) {
                 res.status(400).json(erro)
@@ -132,7 +131,7 @@ class card {
     }
 
     adiciona(card, res) {
-        const sql = 'INSERT INTO card (card_class, card_style, card_text, last_change) VALUES (?, ?, ?, datetime("now"))'
+        const sql = 'INSERT INTO card (card_class, card_style, card_text, last_change, board_id) VALUES (?, ?, ?, datetime("now"), ?)'
 
         conexao.all(sql, Object.values(card), (erro, resultado) => {
             if (erro) {
@@ -150,9 +149,21 @@ class card {
     }
 
     altera(id, card, res) {
-        const sql = `UPDATE card SET card_class = ?, card_style = ?, card_text = ? WHERE card_id = ${id}`
+        const sql = `UPDATE card SET card_class = ?, card_style = ?, card_text = ?, board_id = ? WHERE card_id = ${id}`
 
         conexao.all(sql, Object.values(card), (erro, resultado) => {
+            if (erro) {
+                res.status(400).json(erro)
+            } else {
+                res.status(200).json(resultado)
+            }
+        })
+    }
+
+    excluiBoard(id, res) {
+        const sql = `DELETE FROM card WHERE board_id=${id}`
+
+        conexao.all(sql, (erro, resultado) => {
             if (erro) {
                 res.status(400).json(erro)
             } else {

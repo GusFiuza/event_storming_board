@@ -16,6 +16,24 @@ body {
     z-index: 100;
 }
 
+.boards {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    background-color: lightgray;
+    background-image: url("../img/board.png");
+    background-size: 40px;
+    background-position: center;
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
+
+.boards:hover {
+    border: 1px solid black;
+    border-radius: 5px;
+}
 .snapshot {
     display: flex;
     justify-content: center;
@@ -35,6 +53,13 @@ body {
     border-radius: 5px;
 }
 
+#bMenu {
+    width: auto; 
+    height: auto; 
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bolder;
+    z-index: 100;
+}
 #ssMenu {
     width: auto; 
     height: auto; 
@@ -229,6 +254,11 @@ body {
     background-position: center;
     background-repeat: no-repeat;
     cursor: pointer;
+}
+
+.controles {
+    display: flex;
+    justify-content: flex-end;
 }
 
 .cardeditar {

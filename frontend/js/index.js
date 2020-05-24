@@ -37,6 +37,15 @@ function zoomout() {
   propagaMudanca(novoZoom,'Z')
 }
 
+function boards() {
+  menu = document.getElementById('bMenu').hidden
+  if (menu) {
+    document.getElementById('bMenu').removeAttribute('hidden')
+  } else {
+    document.getElementById('bMenu').setAttribute('hidden','')
+  }
+}
+
 function snapshot() {
   menu = document.getElementById('ssMenu').hidden
   if (menu) {
@@ -46,12 +55,47 @@ function snapshot() {
   }
 }
 
+function novoBoard() {
+  board_name = prompt('Digite um nome para seu quadro:')
+  if (board_name != null) {
+    dadosBoard = 'board_name=' + board_name
+    board_id = manterAPI('post', 'board', dadosBoard, 0)
+    criaBoard(board_id, board_name)
+    propagaMudanca(0,'B')
+  } else {
+    document.getElementById('bMenu').setAttribute('hidden','')
+  }
+}
+
 function novoSnapshot() {
   snap_name = prompt('Digite um nome para seu snapshot:')
-  dadosSnapshot = 'snap_name=' + snap_name
-  snap_id = manterAPI('post', 'snap', dadosSnapshot, 0)
-  criaSnapshot(snap_id, snap_name)
-  propagaMudanca(0,'S')
+  if (snap_name != null) {
+    dadosSnapshot = 'snap_name=' + snap_name
+    snap_id = manterAPI('post', 'snap', dadosSnapshot, 0)
+    criaSnapshot(snap_id, snap_name)
+    propagaMudanca(0,'S')
+  } else {
+    document.getElementById('ssMenu').setAttribute('hidden','')
+  }
+}
+
+function criaBoard(id, nome) {
+  boardItem = document.createElement('div')
+  boardItem.setAttribute('id', 'bItem' + id)
+  boardItem.setAttribute('class', 'ssItem')
+  boardItem.setAttribute('onclick','boardItemClick(' + id + ')')
+  boardItem.textContent = nome
+  boardControls = document.createElement('div')
+  boardControls.setAttribute('class', 'controles')
+  boardEditar = document.createElement('div')
+  boardEditar.setAttribute('class', 'cardeditar')
+  boardExcluir = document.createElement('div')
+  boardExcluir.setAttribute('class', 'cardexcluir')
+  boardControls.appendChild(boardEditar)
+  boardControls.appendChild(boardExcluir)
+  boardItem.appendChild(boardControls)
+  document.getElementById('bMenu').appendChild(boardItem)
+  document.getElementById('bMenu').setAttribute('hidden','')
 }
 
 function criaSnapshot(id, nome) {
@@ -60,36 +104,71 @@ function criaSnapshot(id, nome) {
   snapItem.setAttribute('class', 'ssItem')
   snapItem.setAttribute('onclick','snapItemClick(' + id + ')')
   snapItem.textContent = nome
+  boardControls = document.createElement('div')
+  boardControls.setAttribute('class', 'controles')
   snapExcluir = document.createElement('div')
   snapExcluir.setAttribute('class', 'cardexcluir')
-  snapItem.appendChild(snapExcluir)
+  boardControls.appendChild(snapExcluir)
+  snapItem.appendChild(boardControls)
   document.getElementById('ssMenu').appendChild(snapItem)
   document.getElementById('ssMenu').setAttribute('hidden','')
 }
 
-function snapItemClick(id) {
-  manterAPI('put', 'parm', 'parm_value=' + id, 3)
-  propagaMudanca(id,'AS')
+function boardItemClick(id) {
+  if (event.target.id.substring(0,1) == 'b') {
+    console.log('Board clicado')
+    manterAPI('put', 'parm', 1, 3)
+    manterAPI('put', 'parm', 'parm_value=' + id, 4)
+    propagaMudanca(0,'AS')
+    document.getElementById('bMenu').setAttribute('hidden','')
+  }
+  console.log(consultarAPI('parm', 4))
 }
 
-function carregaCards(id) {
-  filhos = document.body.childElementCount
-  for (i=3;i<filhos;i++) {
-    document.body.children[3].remove()
+function snapItemClick(id) {
+  if (event.target.id.substring(0,1) == 's') {
+    console.log('Snapshot clicado')
+    manterAPI('put', 'parm', 'parm_value=' + id, 3)
+    propagaMudanca(0,'AS')
+    document.getElementById('ssMenu').setAttribute('hidden','')
   }
-  dados = consultarAPI('card-snapshot',consultarAPI('snap',id).snap_timestamp)
+}
+
+function carregaCards() {
+  filhos = document.body.childElementCount
+  for (i=2;i<filhos;i++) {
+    document.body.children[2].remove()
+  }
+  dados = consultarAPI('card-board',consultarAPI('parm', 4) + '&' + consultarAPI('snap',consultarAPI('parm', 3)).snap_timestamp)
   for (i = 0; i < dados.length; i++) {
     criaCard(dados[i].card_id, dados[i].card_class, dados[i].card_style, dados[i].card_text)
   }
-  document.getElementById('ssMenu').setAttribute('hidden','')
 }
 
 function carregamento() {
   dados = consultarAPI('snap', 0)
   for (i = 0; i < dados.length; i++) {
-    criaSnapshot(dados[i].snap_id, dados[i].snap_name)
+    if (i == 0) {
+      document.getElementById('ssItem1').textContent = dados[i].snap_name
+    } else {
+      criaSnapshot(dados[i].snap_id, dados[i].snap_name)
+    }
   }
-  dados = consultarAPI('card-snapshot',consultarAPI('parm', 3).snap_timestamp)
+  dados = consultarAPI('board', 0)
+  for (i = 0; i < dados.length; i++) {
+    if (i == 0) {
+      document.getElementById('bItem1').textContent = dados[i].board_name
+      boardControls = document.createElement('div')
+      boardControls.setAttribute('class', 'controles')
+      boardEditar = document.createElement('div')
+      boardEditar.setAttribute('class', 'cardeditar')
+      boardControls.appendChild(boardEditar)
+      document.getElementById('bItem1').appendChild(boardControls)
+    } else {
+      criaBoard(dados[i].board_id, dados[i].board_name)
+    }
+  }
+  dados = consultarAPI('card-board',consultarAPI('parm', 4) + '&' + consultarAPI('snap',consultarAPI('parm', 3)).snap_timestamp)
   for (i = 0; i < dados.length; i++) {
     criaCard(dados[i].card_id, dados[i].card_class, dados[i].card_style, dados[i].card_text)
   }
@@ -149,7 +228,7 @@ function montaDadosCard(card) {
   card_class = card.getAttribute('class')
   card_style = card.getAttribute('style')
   card_text = card.children[1].textContent
-  dadosCard = 'card_class=' + card_class + '&card_style=' + card_style + '&card_text=' + card_text
+  dadosCard = 'card_class=' + card_class + '&card_style=' + card_style + '&card_text=' + card_text + '&board_id=' + consultarAPI('parm', 4)
   return dadosCard
 }
 
@@ -160,7 +239,7 @@ function newCard(ev) {
     if (card_text != null) {
       card_class = 'event'
       card_style = 'z-index: ' + (document.body.childElementCount - 1) + '; top: ' + ev.clientY + 'px; left:' + ev.clientX + 'px;'
-      dadosCard = 'card_class=' + card_class + '&card_style=' + card_style + '&card_text=' + card_text
+      dadosCard = 'card_class=' + card_class + '&card_style=' + card_style + '&card_text=' + card_text + '&board_id=' + consultarAPI('parm', 4)
       card_id = manterAPI('post', 'card', dadosCard, 0)
       criaCard(card_id, card_class, card_style, card_text)
       propagaMudanca(card_id,'C')
@@ -195,7 +274,7 @@ function newCard(ev) {
       card_style = card_style + 'height: ' + card.style.height + ';'
     }
     card_text = card.children[1].textContent
-    dadosCard = 'card_class=' + card_class + '&card_style=' + card_style + '&card_text=' + card_text
+    dadosCard = 'card_class=' + card_class + '&card_style=' + card_style + '&card_text=' + card_text + '&board_id=' + consultarAPI('parm', 4)
     card_id = manterAPI('post', 'card', dadosCard, 0)
     criaCard(card_id, card_class, card_style, card_text)
     propagaMudanca(card_id,'C')
@@ -217,20 +296,48 @@ function newCard(ev) {
     propagaMudanca(card.id.replace('card',''),'U')
   }
   if (ev.target.getAttribute('class') == 'cardeditar') {
-    card = ev.target.parentElement.parentElement
-    texto = prompt('Digite o novo texto')
-    if (texto != null) {
-      console.log('Alterei o texto')
-      card.children[1].textContent = texto
-      manterAPI('put', 'card', montaDadosCard(card), card.id.replace("card", ""))
-      propagaMudanca(card.id.replace('card',''),'U')
+    if (ev.target.parentElement.parentElement.getAttribute('class').substring(0,2) == 'ss') {
+      Item = ev.target.parentElement.parentElement
+      texto = prompt('Digite o novo nome do quadro')
+      if (texto != null) {
+        Item.textContent = texto
+        manterAPI('put', 'board', 'board_name=' + texto, Item.id.replace("bItem", ""))
+        propagaMudanca(0,'B')
+      }
+    } else {
+      card = ev.target.parentElement.parentElement
+      texto = prompt('Digite o novo texto')
+      if (texto != null) {
+        console.log('Alterei o texto')
+        card.children[1].textContent = texto
+        manterAPI('put', 'card', montaDadosCard(card), card.id.replace("card", ""))
+        propagaMudanca(card.id.replace('card',''),'U')
+      }
     }
   }
   if (ev.target.getAttribute('class') == 'cardexcluir') {
-    if (ev.target.parentElement.getAttribute('class').substring(0,2) == 'ss') {
-      ssItem = ev.target.parentElement
-      manterAPI('delete', 'snap', '', ssItem.id.replace("ssItem", ""))
-      propagaMudanca(0,'S')
+    if (ev.target.parentElement.parentElement.getAttribute('class').substring(0,2) == 'ss') {
+      Item = ev.target.parentElement.parentElement
+      if (Item.id.substring(0,1) == 's' ) {
+        manterAPI('delete', 'snap', '', Item.id.replace("ssItem", ""))
+        propagaMudanca(0,'S')
+        if (consultarAPI('parm',3) == Item.id.replace("ssItem", "")) {
+          manterAPI('put', 'parm', 'parm_value=' + 1, 3)
+          propagaMudanca(0,'AS')
+        }
+        document.getElementById('ssMenu').setAttribute('hidden','')
+      } else {
+        if (confirm('Deseja apagar o quadro e todos os post-its contidos nele')) {
+          manterAPI('delete', 'board', '', Item.id.replace("bItem", ""))
+          manterAPI('delete', 'card-board', '', Item.id.replace("bItem", ""))
+          propagaMudanca(0,'B')
+          if (consultarAPI('parm',4) == Item.id.replace("bItem", "")) {
+            manterAPI('put', 'parm', 'parm_value=' + 1, 4)
+            propagaMudanca(0,'AS')
+          }
+          document.getElementById('bMenu').setAttribute('hidden','')
+        }
+      }
     } else {
       card = ev.target.parentElement.parentElement
       console.log('Exclui card')

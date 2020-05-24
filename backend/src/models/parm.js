@@ -37,6 +37,14 @@ conexao.all(`CREATE TABLE IF NOT EXISTS parm (
                             console.log("Erro no cadastro do parâmetro 3: " + err)
                         }
                     })
+                    conexao.all(`INSERT INTO parm
+                        (parm_id, parm_value)
+                    VALUES
+                        (4, 1);`, (err) => {
+                        if (err) {
+                            console.log("Erro no cadastro do parâmetro 4: " + err)
+                        }
+                    })
                 }
             }
         })

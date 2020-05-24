@@ -1,25 +1,22 @@
 const conexao = require('../infraestrutura/conexao')
 
-conexao.all(`CREATE TABLE IF NOT EXISTS snapshot (
-    snap_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    snap_name TEXT NOT NULL,
-    snap_timestamp TEXT NOT NULL);`, (err) => {
+conexao.all(`CREATE TABLE IF NOT EXISTS board (
+    board_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    board_name TEXT NOT NULL);`, (err) => {
     if (err) {
-        console.log("Erro na criação da tabela snapshot: " + err)
+        console.log("Erro na criação da tabela board: " + err)
     } else {
-        conexao.all(`SELECT count(*) as quantidade FROM snapshot;`, (err, resultado) => {
+        console.log('Tabela board criada com sucesso')
+        conexao.all(`SELECT count(*) as quantidade FROM board;`, (err, resultado) => {
             if (err) {
-                console.log("Erro ao verificar dados na snapshoot: " + err)
+                console.log("Erro ao verificar dados na board: " + err)
             } else {
-                console.log('Avaliando existência de snapshots')
+                console.log('Avaliando existência de boards de teste')
                 if (resultado[0].quantidade == 0) {
-                    console.log('Cadastrando snapshot inicial')
-                    conexao.all(`INSERT INTO snapshot
-                        (snap_id, snap_name, snap_timestamp)
-                    VALUES
-                        (1, 'Todos os post-its', '9999-12-31 23:59:59');`, (err) => {
+                    console.log('Cadastrando board inicial')
+                    conexao.all(`INSERT INTO board (board_name) VALUES ('quadro');`, (err) => {
                         if (err) {
-                            console.log("Erro no cadastro do parâmetro 1: " + err)
+                            console.log("Erro no cadastro de board: " + err)
                         }
                     })
                 }
@@ -28,9 +25,9 @@ conexao.all(`CREATE TABLE IF NOT EXISTS snapshot (
     }
 })
 
-class snapshot {
+class board {
     lista(res) {
-        const sql = `SELECT * FROM snapshot;`
+        const sql = `SELECT * FROM board;`
 
         conexao.all(sql, (erro, resultado) => {
             if (erro) {
@@ -42,7 +39,7 @@ class snapshot {
     }
 
     buscaPorId(id, res) {
-        const sql = `SELECT snap_name, snap_timestamp FROM snapshot WHERE snap_id=${id}`
+        const sql = `SELECT board_name FROM board WHERE board_id=${id}`
 
         conexao.all(sql, (erro, resultado) => {
             if (erro) {
@@ -54,13 +51,13 @@ class snapshot {
     }
 
     adiciona(parm, res) {
-        const sql = 'INSERT INTO snapshot (snap_name, snap_timestamp) VALUES (?, datetime("now"))'
+        const sql = 'INSERT INTO board (board_name) VALUES (?);'
 
         conexao.all(sql, Object.values(parm), (erro, resultado) => {
             if (erro) {
                 res.status(400).json(erro)
             } else {
-                conexao.all("SELECT seq FROM sqlite_sequence WHERE name = 'snapshot';", (erro, resultado) => {
+                conexao.all("SELECT seq FROM sqlite_sequence WHERE name = 'board';", (erro, resultado) => {
                     if (erro) {
                         res.status(400).json(erro)
                     } else {
@@ -72,7 +69,7 @@ class snapshot {
     }
 
     altera(id, parm, res) {
-        const sql = `UPDATE snapshot SET snap_name = ?, snap_timestamp = ? WHERE snap_id = ${id}`
+        const sql = `UPDATE board SET board_name = ? WHERE board_id = ${id}`
 
         conexao.all(sql, Object.values(parm), (erro, resultado) => {
             if (erro) {
@@ -84,7 +81,7 @@ class snapshot {
     }
 
     exclui(id, res) {
-        const sql = `DELETE FROM snapshot WHERE snap_id=${id}`
+        const sql = `DELETE FROM board WHERE board_id=${id}`
 
         conexao.all(sql, (erro, resultado) => {
             if (erro) {
@@ -96,4 +93,4 @@ class snapshot {
     }
 }
 
-module.exports = new snapshot
+module.exports = new board

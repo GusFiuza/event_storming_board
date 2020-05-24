@@ -17,11 +17,18 @@
         <div class="zoomIn" onclick="zoomin()"></div>
         <div class="zoomScale">100%</div>
         <div class="zoomOut" onclick="zoomout()"></div>
+        <div class="boards" onclick="boards()"></div>
+        <div id="bMenu" hidden>
+            <div id=bItem0 class="ssItem" onclick="novoBoard()">Adicionar novo quadro</div>
+            <div id=bItem1 class="ssItem" onclick="boardItemClick(1)"></div>
+        </div>
         <div class="snapshot" onclick="snapshot()"></div>
         <div id="ssMenu" hidden>
             <div id=ssItem0 class="ssItem" onclick="novoSnapshot()">Adicionar novo snapshot</div>
+            <div id=ssItem1 class="ssItem" onclick="snapItemClick(1)"></div>
         </div>
     </div>
 </body>
 <script>carregamento()</script>
+
 </html>
