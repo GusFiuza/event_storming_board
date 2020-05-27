@@ -1,0 +1,116 @@
+<!doctype html>
+
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Deslocamento múltiplo</title>
+    <link rel="icon" type="image/png" href="img/storm.png" />
+</head>
+
+<body>
+    <div id="d1" style="display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 200px; 
+                height: 200px; 
+                background-color: lawngreen; 
+                border-radius: 5px;
+                position: absolute;
+                top: 10px;
+                left: 10px;
+                cursor: move;" onmouseover="inclui(event)" onmouseout="exclui(event)">
+        <input type="checkbox">
+        Post-it
+    </div>
+    <div id="d2" style="display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 200px; 
+                height: 200px; 
+                background-color: yellow; 
+                border-radius: 5px;
+                position: absolute;
+                top: 220px;
+                left: 220px;
+                cursor: move;" onmouseover="inclui(event)" onmouseout="exclui(event)">
+        <input type="checkbox">
+        Post-it
+    </div>
+    <div id="d3" style="display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 200px; 
+                height: 200px; 
+                background-color: deeppink; 
+                border-radius: 5px;
+                position: absolute;
+                top: 430px;
+                left: 430px;
+                cursor: move;" onmouseover="inclui(event)" onmouseout="exclui(event)">
+        <input type="checkbox">
+        Post-it
+    </div>
+</body>
+<script>
+
+    elementos = []
+
+    function dragElement(elmnts) {
+
+        var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0
+        for (i = 0; i < elmnts.length; i++) {
+            document.getElementById(elmnts[i].id).onmousedown = dragMouseDown
+        }
+
+        function dragMouseDown() {
+            e = window.event;
+            e.preventDefault();
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            document.onmouseup = closeDragElement;
+            document.onmousemove = elementDrag;
+        }
+
+        function elementDrag() {
+            e = window.event;
+            e.preventDefault();
+            pos1 = pos3 - e.clientX;
+            pos2 = pos4 - e.clientY;
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            for (i = 0; i < elmnts.length; i++) {
+                elmnts[i].style.top = (elmnts[i].offsetTop - pos2) + "px";
+                elmnts[i].style.left = (elmnts[i].offsetLeft - pos1) + "px";
+            }
+        }
+
+        function closeDragElement() {
+            e = window.event;
+            e.preventDefault();
+            document.onmouseup = null;
+            document.onmousemove = null;
+        }
+    }
+
+    function inclui(ev) {
+        if (ev.target.id.substring(0,1) == 'd') {
+            if (elementos.indexOf(ev.target) == -1) {
+                elementos.unshift(ev.target)
+            }
+            dragElement(elementos)
+        }
+    }
+
+    function exclui(ev) {
+        if (ev.target.id.substring(0,1) == 'd') {
+            if (!ev.target.children[0].checked) {
+                elementos.splice(elementos.indexOf(ev.target),1)
+            }
+        }
+    }
+
+
+</script>
+
+</html>

@@ -53,12 +53,12 @@ socket.onmessage = function (event) {
     } else if (mensagemRecebida[1] == 'C') {
         if (document.getElementById('card' + mensagemRecebida[0]) == null) {
             dados = consultarAPI('card', mensagemRecebida[0])
-            criaCard(dados.card_id, dados.card_class, dados.card_style, dados.card_text)
+            criaCard(dados.card_id, dados.card_class, dados.card_style, dados.card_text, dados.card_check)
         }
     } else if (mensagemRecebida[1] == 'U') {
         document.getElementById('card' + mensagemRecebida[0]).remove()
         dados = consultarAPI('card', mensagemRecebida[0])
-        criaCard(dados.card_id, dados.card_class, dados.card_style, dados.card_text)
+        criaCard(dados.card_id, dados.card_class, dados.card_style, dados.card_text, dados.card_check)
     } else {
         if (document.getElementById('card' + mensagemRecebida[0]) != null) {
             document.getElementById('card' + mensagemRecebida[0]).remove()

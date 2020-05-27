@@ -18,7 +18,7 @@ module.exports = app => {
                 res.status(400).json(erro)
             } else {
                 for (i=0;i<resultado.length;i++) {
-                    grava_card = `INSERT INTO card (card_class, card_style, card_text, last_change, board_id) VALUES ("${resultado[i].card_class}", "${resultado[i].card_style}", "${resultado[i].card_text}", "${resultado[i].last_change}", 1);`
+                    grava_card = `INSERT INTO card (card_class, card_style, card_text, last_change, board_id, card_check) VALUES ("${resultado[i].card_class}", "${resultado[i].card_style}", "${resultado[i].card_text}", "${resultado[i].last_change}", 1, 0);`
                     destino.all(grava_card, (erro, resultado) => {
                         if (erro) {
                             console.log(erro.message)
