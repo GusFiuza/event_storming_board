@@ -16,6 +16,49 @@ body {
     z-index: 100;
 }
 
+/* Esconde o input */
+input[type='file'] {
+    display: none
+}
+  
+.open {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    background-color: lightgray;
+    background-image: url("../img/open.png");
+    background-size: 40px;
+    background-position: center;
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
+
+.open:hover {
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+.save {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    background-color: lightgray;
+    background-image: url("../img/save.png");
+    background-size: 40px;
+    background-position: center;
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
+
+.save:hover {
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
 .boards {
     display: flex;
     justify-content: center;
@@ -30,10 +73,12 @@ body {
     cursor: pointer;
 }
 
+
 .boards:hover {
     border: 1px solid black;
     border-radius: 5px;
 }
+
 .snapshot {
     display: flex;
     justify-content: center;

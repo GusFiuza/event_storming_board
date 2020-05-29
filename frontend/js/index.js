@@ -323,6 +323,7 @@ function newCard(ev) {
         Item.textContent = texto
         manterAPI('put', 'board', 'board_name=' + texto, Item.id.replace("bItem", ""))
         propagaMudanca(0, 'B')
+        document.getElementById('bMenu').setAttribute('hidden', '')
       }
     } else {
       card = ev.target.parentElement.parentElement

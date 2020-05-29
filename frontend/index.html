@@ -11,12 +11,16 @@
 </head>
 <script src="js/api.js"></script>
 <script src="js/index.js"></script>
+<script src="js/export.js"></script>
 
-<body id="board" onclick="newCard(event)" style="transform: scale(1); transform-origin: top left;">
+<body id="board" onclick="newCard(event)" style="transform: scale(1); transform-origin: top left;">    
     <div id="toolBar" class="barraFerramenta" style="left: 10px; transform: scale(1); transform-origin: top left;">
         <div class="zoomIn" onclick="zoomin()"></div>
         <div class="zoomScale">100%</div>
         <div class="zoomOut" onclick="zoomout()"></div>
+        <label class="open" for="fileToLoad"></label>
+        <input type="file" id="fileToLoad" onchange="boardOpen()">
+        <div class="save" onclick="boardSave()"></div>
         <div class="boards" onclick="boards()"></div>
         <div id="bMenu" hidden>
             <div id=bItem0 class="ssItem" onclick="novoBoard()">Adicionar novo quadro</div>
