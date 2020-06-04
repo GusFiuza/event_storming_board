@@ -1,20 +1,20 @@
-#Quadro digital para post-it
+# Quadro digital para post-it
 
-###Descrição
+### Descrição
 Um espaço onde os usuários podem observar e contribuir de forma online, através de post-its digitais.
 
-###Começando
+### Começando
 
-#####Pré requisitos
+##### Pré requisitos
 
 - Um editor de código (Recomendo o [Visual Studio Code](http://code.visualstudio.com/))
 - [NodeJS](http://nodejs.org/pt-br/) versão 14.2 ou superior
 
-#####Instalação
+##### Instalação
 
 Inicialmente você precisa copiar o código da aplicação. Para isso você pode fazer o download no nosso repositório do [GitHub](http://github.com/GusFiuza/event_storming_board).
 
-#####Execução
+##### Execução
 
 Na pasta onde você copiou o código da aplicação execute o seguinte comando:
 
@@ -26,7 +26,7 @@ Isso vai instalar o módulos necessários para executar a aplicação. Em seguid
 
 Pronto! Abra seu navegador e digite `localhost` na barra de endereço. Seu **Quadro digital para post-its** está pronto!
 
-###Funcionalidades
+### Funcionalidades
 
 Com o **Quadro digital para post-its** você pode é claro, criar post-it, mas também:
 
@@ -48,18 +48,18 @@ E você ainda pode:
 
 Tudo isso de forma simples, fácil e intuitiva.
 
-###Testes
+### Testes
 
 Essa é uma dívida técnica que tenho... 😌
 
-###Contribuições
+### Contribuições
 
 Por enquanto, só eu mesmo. Mas fique a vontade em contribuir, que seu nome aparece aqui.
 
-###Licença
+### Licença
 
 Mas uma dívida... 😊
 
-###Versionamento
+### Versionamento
 
 Utilizo o [versionamento semântico](http://https://semver.org/lang/pt-BR/) para controlar a mudanças **na** aplicação.
