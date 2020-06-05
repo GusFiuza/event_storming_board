@@ -18,11 +18,11 @@ Inicialmente você precisa copiar o código da aplicação. Para isso você pode
 
 Na pasta onde você copiou o código da aplicação execute o seguinte comando:
 
-`$node install`
+`$npm install`
 
 Isso vai instalar o módulos necessários para executar a aplicação. Em seguida execute:
 
-`$node start`
+`$npm start`
 
 Pronto! Abra seu navegador e digite `localhost` na barra de endereço. Seu **Quadro digital para post-its** está pronto!
 
