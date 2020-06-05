@@ -31,7 +31,7 @@ Pronto! Abra seu navegador e digite `localhost` na barra de endereço. Seu **Qua
 Com o **Quadro digital para post-its** você pode é claro, criar post-it, mas também:
 
 - Movimentá-los no quadro;
-- Moviventar grupos de post-its;
+- Movimentar grupos de post-its;
 - Redimencionálo;
 - Duplicá-los;
 - Alterar o texto;
@@ -58,7 +58,7 @@ Por enquanto, só eu mesmo. Mas fique a vontade em contribuir, que seu nome apar
 
 ### Licença
 
-Mas uma dívida... 😊
+Este software é licenciado sob a Licença Copyright (c) Gustavo de Abreu Fiuza 2020 - veja o arquivo [LICENSE](LICENSE) para mais detalhes.
 
 ### Versionamento
 
