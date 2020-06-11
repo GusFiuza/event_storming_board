@@ -1,153 +1,75 @@
 body {
     width: 100%;
     height: 100vh;
+    transform: scale(1);
+    transform-origin: top left;
 }
 
-.barraFerramenta {
+input[type='file'] {
+    display: none
+}
+
+#toolBar {
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
-    align-items: flex-start;
     position: absolute;
     top: 10px;
     left: 10px;
     width: auto;
     height: auto;
     z-index: 100;
+    transform: scale(1);
+    transform-origin: top left;
 }
 
-/* Esconde o input */
-input[type='file'] {
-    display: none
+.list {
+    width: auto; 
+    height: auto; 
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bolder;
+    z-index: 100;
 }
-  
-.open {
+
+.button {
     display: flex;
     justify-content: center;
     align-items: center;
     width: 50px;
     height: 50px;
     background-color: lightgray;
-    background-image: url("../img/open.png");
-    background-size: 40px;
     background-position: center;
     background-repeat: no-repeat;
     cursor: pointer;
 }
 
-.open:hover {
+.button:hover {
     border: 1px solid black;
     border-radius: 5px;
+}
+
+.open {
+    background-image: url("../img/open.png");
+    background-size: 40px;
 }
 
 .save {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 50px;
-    height: 50px;
-    background-color: lightgray;
     background-image: url("../img/save.png");
-    background-size: 40px;
-    background-position: center;
-    background-repeat: no-repeat;
-    cursor: pointer;
+    background-size: 35px;
 }
 
-.save:hover {
-    border: 1px solid black;
-    border-radius: 5px;
-}
-
-.boards {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 50px;
-    height: 50px;
-    background-color: lightgray;
+.board {
     background-image: url("../img/board.png");
     background-size: 40px;
-    background-position: center;
-    background-repeat: no-repeat;
-    cursor: pointer;
-}
-
-
-.boards:hover {
-    border: 1px solid black;
-    border-radius: 5px;
 }
 
 .snapshot {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 50px;
-    height: 50px;
-    background-color: lightgray;
     background-image: url("../img/snapshot.png");
     background-size: 40px;
-    background-position: center;
-    background-repeat: no-repeat;
-    cursor: pointer;
-}
-
-.snapshot:hover {
-    border: 1px solid black;
-    border-radius: 5px;
-}
-
-#bMenu {
-    width: auto; 
-    height: auto; 
-    font-family: 'Courier New', Courier, monospace;
-    font-weight: bolder;
-    z-index: 100;
-}
-#ssMenu {
-    width: auto; 
-    height: auto; 
-    font-family: 'Courier New', Courier, monospace;
-    font-weight: bolder;
-    z-index: 100;
-}
-
-.ssItem {
-    display: flex;
-    justify-content: space-between;
-    padding-left: 5px;
-    align-items: center;
-    width: auto;
-    height: 2rem;
-    background-color: lightgray;
-}
-
-.ssItem:first-child {
-    padding-right: 5px;
-}
-
-.ssItem:hover {
-    background-color: gray;
 }
 
 .zoomIn {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 50px;
-    height: 50px;
-    background-color: lightgray;
     background-image: url("../img/zoomIn.png");
     background-size: 50px;
-    background-position: center;
-    background-repeat: no-repeat;
-    cursor: pointer;
-}
-
-.zoomIn:hover {
-    border: 1px solid black;
-    border-radius: 5px;
 }
 
 .zoomScale {
@@ -162,22 +84,26 @@ input[type='file'] {
 }
 
 .zoomOut {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 50px;
-    height: 50px;
-    background-color: lightgray;
     background-image: url("../img/zoomOut.png");
     background-size: 50px;
-    background-position: center;
-    background-repeat: no-repeat;
-    cursor: pointer;
 }
 
-.zoomOut:hover {
-    border: 1px solid black;
-    border-radius: 5px;
+.listItem {
+    display: flex;
+    justify-content: space-between;
+    padding-left: 5px;
+    align-items: center;
+    width: auto;
+    height: 2rem;
+    background-color: lightgray;
+}
+
+.listItem:first-child {
+    padding-right: 5px;
+}
+
+.listItem:hover {
+    background-color: gray;
 }
 
 .event {

@@ -4,35 +4,36 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Event storming digital board</title>
+    <title>Quadro digital para post-its</title>
+    <link rel="icon" type="image/png" href="img/storm.png" />
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/index.css">
-    <link rel="icon" type="image/png" href="img/storm.png" />
 </head>
-<script src="js/api.js"></script>
-<script src="js/index.js"></script>
-<script src="js/export.js"></script>
 
-<body id="board" onclick="newCard(event)" style="transform: scale(1); transform-origin: top left;">    
-    <div id="toolBar" class="barraFerramenta" style="left: 10px; transform: scale(1); transform-origin: top left;">
-        <div class="zoomIn" onclick="zoomin()"></div>
-        <div class="zoomScale">100%</div>
-        <div class="zoomOut" onclick="zoomout()"></div>
-        <label class="open" for="fileToLoad"></label>
-        <input type="file" id="fileToLoad" onchange="boardOpen()">
-        <div class="save" onclick="boardSave()"></div>
-        <div class="boards" onclick="boards()"></div>
-        <div id="bMenu" hidden>
-            <div id=bItem0 class="ssItem" onclick="novoBoard()">Adicionar novo quadro</div>
-            <div id=bItem1 class="ssItem" onclick="boardItemClick(1)"></div>
+<script src="js/api.js"></script>
+<script src="js/export.js"></script>
+<script src="js/index.js"></script>
+
+<body onclick="bodyClick(event)">    
+    <div id="toolBar">
+        <label class="button open" for="file"></label>
+        <input id="file" type="file" onchange="openFile()">
+        <div class="button save" onclick="saveFile()"></div>
+        <div class="button board" onclick="showList('board')"></div>
+        <div id="boardList" class="list" hidden>
+            <div class="listItem" onclick="newItem('board')">Adicionar novo quadro</div>
+            <div id=board1 class="listItem" onclick="itemClick(1)"></div>
         </div>
-        <div class="snapshot" onclick="snapshot()"></div>
-        <div id="ssMenu" hidden>
-            <div id=ssItem0 class="ssItem" onclick="novoSnapshot()">Adicionar novo snapshot</div>
-            <div id=ssItem1 class="ssItem" onclick="snapItemClick(1)"></div>
+        <div class="button snapshot" onclick="showList('snapshot')"></div>
+        <div id="snapshotList" class="list" hidden>
+            <div class="listItem" onclick="newItem('snapshot')">Adicionar novo instantâneo</div>
+            <div id=snapshot1 class="listItem" onclick="itemClick(1)"></div>
         </div>
+        <div class="button zoomIn" onclick="zoom('+')"></div>
+        <div id="zoomRate" class="zoomScale"></div>
+        <div class="button zoomOut" onclick="zoom('-')"></div>
     </div>
 </body>
-<script>carregamento()</script>
+<script>pageLoad()</script>
 
 </html>

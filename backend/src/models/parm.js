@@ -24,14 +24,6 @@ conexao.all(`CREATE TABLE IF NOT EXISTS parm (
                     conexao.all(`INSERT INTO parm
                         (parm_id, parm_value)
                     VALUES
-                        (2, 1);`, (err) => {
-                        if (err) {
-                            console.log("Erro no cadastro do parâmetro 2: " + err)
-                        }
-                    })
-                    conexao.all(`INSERT INTO parm
-                        (parm_id, parm_value)
-                    VALUES
                         (3, 1);`, (err) => {
                         if (err) {
                             console.log("Erro no cadastro do parâmetro 3: " + err)

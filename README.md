@@ -1,7 +1,7 @@
 # Quadro digital para post-it
 
 ### Descrição
-Um espaço onde os usuários podem observar e contribuir de forma online, através de post-its digitais.
+Um espaço onde os usuários podem observar e colaborar de forma digital e online, através de post-its digitais.
 
 ### Começando
 
@@ -32,7 +32,7 @@ Com o **Quadro digital para post-its** você pode é claro, criar post-it, mas t
 
 - Movimentá-los no quadro;
 - Movimentar grupos de post-its;
-- Redimencionálo;
+- Redimencioná-lo;
 - Duplicá-los;
 - Alterar o texto;
 - Alterar a cor;
@@ -42,7 +42,7 @@ E você ainda pode:
 
 - Alterar o zoom do quadro;
 - Salvar seu quadro em um arquivo json;
-- Abrir um quadro saldo
+- Abrir um quadro salvo
 - Criar vários quadros
 - Criar *snapshots* do seu quadro, para mostrar apenas os post-its criados até aquele momento.
 

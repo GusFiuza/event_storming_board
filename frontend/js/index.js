@@ -28,75 +28,43 @@ function mouseUp(ev) {
   }
 }
 
-function zoomin() {
-  novoZoom = consultarAPI('parm', 1) + .1
-  fator = 1 / novoZoom
-  document.body.style.transform = 'scale(' + novoZoom + ')'
-  document.getElementById('toolBar').style.transform = 'scale(' + (fator) + ')'
+function zoom(type) {
+  novoZoom = consultarAPI('parm', 1)
+  if (type == '+') { novoZoom += .1 } else novoZoom -= .1
   manterAPI('put', 'parm', 'parm_value=' + novoZoom, 1)
-  manterAPI('put', 'parm', 'parm_value=' + (fator), 2)
-  document.getElementById('toolBar').children[1].textContent = parseInt(novoZoom * 100) + '%'
   propagaMudanca(novoZoom, 'Z')
 }
 
-function zoomout() {
-  novoZoom = consultarAPI('parm', 1) - .1
-  fator = 1 / novoZoom
-  document.body.style.transform = 'scale(' + novoZoom + ')'
-  document.getElementById('toolBar').style.transform = 'scale(' + (fator) + ')'
-  manterAPI('put', 'parm', 'parm_value=' + novoZoom, 1)
-  manterAPI('put', 'parm', 'parm_value=' + (fator), 2)
-  document.getElementById('toolBar').children[1].textContent = parseInt(novoZoom * 100) + '%'
-  propagaMudanca(novoZoom, 'Z')
-}
-
-function boards() {
-  menu = document.getElementById('bMenu').hidden
-  if (menu) {
-    document.getElementById('bMenu').removeAttribute('hidden')
+function showList(type) {
+  boardlist = document.getElementById(type + 'List')
+  if (boardlist.hidden) {
+    boardlist.removeAttribute('hidden')
   } else {
-    document.getElementById('bMenu').setAttribute('hidden', '')
+    boardlist.setAttribute('hidden', '')
   }
 }
 
-function snapshot() {
-  menu = document.getElementById('ssMenu').hidden
-  if (menu) {
-    document.getElementById('ssMenu').removeAttribute('hidden')
+function newItem(type) {
+  if (type == 'board') {
+    item = 'quadro'
   } else {
-    document.getElementById('ssMenu').setAttribute('hidden', '')
+    item = 'instantâneo'
   }
-}
-
-function novoBoard() {
-  board_name = prompt('Digite um nome para seu quadro:')
-  if (board_name != null) {
-    dadosBoard = 'board_name=' + board_name
-    board_id = manterAPI('post', 'board', dadosBoard, 0)
-    criaBoard(board_id, board_name)
-    propagaMudanca(0, 'B')
+  itemName = prompt('Digite um nome para seu ' + item + ':')
+  if (itemName != null) {
+    itemData = 'name=' + itemName
+    itemId = manterAPI('post', type, itemData, 0)
+    propagaMudanca(0, type)
   } else {
-    document.getElementById('bMenu').setAttribute('hidden', '')
-  }
-}
-
-function novoSnapshot() {
-  snap_name = prompt('Digite um nome para seu snapshot:')
-  if (snap_name != null) {
-    dadosSnapshot = 'snap_name=' + snap_name
-    snap_id = manterAPI('post', 'snap', dadosSnapshot, 0)
-    criaSnapshot(snap_id, snap_name)
-    propagaMudanca(0, 'S')
-  } else {
-    document.getElementById('ssMenu').setAttribute('hidden', '')
+    showList(type)
   }
 }
 
 function criaBoard(id, nome) {
   boardItem = document.createElement('div')
-  boardItem.setAttribute('id', 'bItem' + id)
-  boardItem.setAttribute('class', 'ssItem')
-  boardItem.setAttribute('onclick', 'boardItemClick(' + id + ')')
+  boardItem.setAttribute('id', 'board' + id)
+  boardItem.setAttribute('class', 'listItem')
+  boardItem.setAttribute('onclick', 'itemClick(' + id + ')')
   boardItem.textContent = nome
   boardControls = document.createElement('div')
   boardControls.setAttribute('class', 'controles')
@@ -107,15 +75,16 @@ function criaBoard(id, nome) {
   boardControls.appendChild(boardEditar)
   boardControls.appendChild(boardExcluir)
   boardItem.appendChild(boardControls)
-  document.getElementById('bMenu').appendChild(boardItem)
-  document.getElementById('bMenu').setAttribute('hidden', '')
+  boardlist = document.getElementById('boardList')
+  boardlist.appendChild(boardItem)
+  boardlist.setAttribute('hidden', '')
 }
 
 function criaSnapshot(id, nome) {
   snapItem = document.createElement('div')
-  snapItem.setAttribute('id', 'ssItem' + id)
-  snapItem.setAttribute('class', 'ssItem')
-  snapItem.setAttribute('onclick', 'snapItemClick(' + id + ')')
+  snapItem.setAttribute('id', 'snapshot' + id)
+  snapItem.setAttribute('class', 'listItem')
+  snapItem.setAttribute('onclick', 'itemClick(' + id + ')')
   snapItem.textContent = nome
   boardControls = document.createElement('div')
   boardControls.setAttribute('class', 'controles')
@@ -123,28 +92,22 @@ function criaSnapshot(id, nome) {
   snapExcluir.setAttribute('class', 'cardexcluir')
   boardControls.appendChild(snapExcluir)
   snapItem.appendChild(boardControls)
-  document.getElementById('ssMenu').appendChild(snapItem)
-  document.getElementById('ssMenu').setAttribute('hidden', '')
+  snapshotlist = document.getElementById('snapshotList')
+  snapshotlist.appendChild(snapItem)
+  snapshotlist.setAttribute('hidden', '')
 }
 
-function boardItemClick(id) {
-  if (event.target.id.substring(0, 1) == 'b') {
-    console.log('Board clicado')
+function itemClick(id) {
+  if (event.target.parentElement.id == 'boardList') {
     manterAPI('put', 'parm', 1, 3)
     manterAPI('put', 'parm', 'parm_value=' + id, 4)
-    propagaMudanca(0, 'AS')
-    document.getElementById('bMenu').setAttribute('hidden', '')
+    showList('board')
   }
-  console.log(consultarAPI('parm', 4))
-}
-
-function snapItemClick(id) {
-  if (event.target.id.substring(0, 1) == 's') {
-    console.log('Snapshot clicado')
+  if (event.target.parentElement.id == 'snapshotList') {
     manterAPI('put', 'parm', 'parm_value=' + id, 3)
-    propagaMudanca(0, 'AS')
-    document.getElementById('ssMenu').setAttribute('hidden', '')
+    showList('snapshot')
   }
+  propagaMudanca(0, 'AS')
 }
 
 function carregaCards() {
@@ -152,17 +115,17 @@ function carregaCards() {
   for (i = 2; i < filhos; i++) {
     document.body.children[2].remove()
   }
-  dados = consultarAPI('card-board', consultarAPI('parm', 4) + '&' + consultarAPI('snap', consultarAPI('parm', 3)).snap_timestamp)
+  dados = consultarAPI('card-board', consultarAPI('parm', 4) + '&' + consultarAPI('snapshot', consultarAPI('parm', 3)).snap_timestamp)
   for (i = 0; i < dados.length; i++) {
     criaCard(dados[i].card_id, dados[i].card_class, dados[i].card_style, dados[i].card_text, dados[i].card_check)
   }
 }
 
-function carregamento() {
-  dados = consultarAPI('snap', 0)
+function pageLoad() {
+  dados = consultarAPI('snapshot', 0)
   for (i = 0; i < dados.length; i++) {
     if (i == 0) {
-      document.getElementById('ssItem1').textContent = dados[i].snap_name
+      document.getElementById('snapshot1').textContent = dados[i].snap_name
     } else {
       criaSnapshot(dados[i].snap_id, dados[i].snap_name)
     }
@@ -170,27 +133,28 @@ function carregamento() {
   dados = consultarAPI('board', 0)
   for (i = 0; i < dados.length; i++) {
     if (i == 0) {
-      document.getElementById('bItem1').textContent = dados[i].board_name
+      document.getElementById('board1').textContent = dados[i].board_name
       boardControls = document.createElement('div')
       boardControls.setAttribute('class', 'controles')
       boardEditar = document.createElement('div')
       boardEditar.setAttribute('class', 'cardeditar')
       boardControls.appendChild(boardEditar)
-      document.getElementById('bItem1').appendChild(boardControls)
+      document.getElementById('board1').appendChild(boardControls)
     } else {
       criaBoard(dados[i].board_id, dados[i].board_name)
     }
   }
-  dados = consultarAPI('card-board', consultarAPI('parm', 4) + '&' + consultarAPI('snap', consultarAPI('parm', 3)).snap_timestamp)
+  dados = consultarAPI('card-board', consultarAPI('parm', 4) + '&' + consultarAPI('snapshot', consultarAPI('parm', 3)).snap_timestamp)
   for (i = 0; i < dados.length; i++) {
     criaCard(dados[i].card_id, dados[i].card_class, dados[i].card_style, dados[i].card_text, dados[i].card_check)
   }
-  document.body.style.transform = 'scale(' + consultarAPI('parm', 1) + ')'
-  classes = ['event', 'command', 'aggregate', 'condition', 'context']
-  fator = consultarAPI('parm', 2)
-  tamanhoCard = ''
+  novoZoom = consultarAPI('parm', 1)
+  fator = 1 / novoZoom
+  document.body.style.transform = 'scale(' + novoZoom + ')'
   document.getElementById('toolBar').style.transform = 'scale(' + fator + ')'
-  document.getElementById('toolBar').children[1].textContent = parseInt(consultarAPI('parm', 1) * 100) + '%'
+  document.getElementById('zoomRate').textContent = parseInt(novoZoom * 100) + '%'
+  classes = ['event', 'command', 'aggregate', 'condition', 'context']
+  tamanhoCard = ''
 }
 
 function criaCard(id, classe, estilo, texto, marcacao) {
@@ -216,7 +180,7 @@ function criaCard(id, classe, estilo, texto, marcacao) {
   cardOrdem.setAttribute('class', 'cardordem')
   cardOrdem.textContent = estilo.substring(9, estilo.indexOf('; top'))
   cardCheck.setAttribute('type', 'checkbox')
-  cardCheck.setAttribute('onchange','checkChange(event)')
+  cardCheck.setAttribute('onchange', 'checkChange(event)')
   cardCopiar.setAttribute('class', 'cardduplicar')
   cardCor.setAttribute('class', 'cardcor')
   cardEditar.setAttribute('class', 'cardeditar')
@@ -228,7 +192,7 @@ function criaCard(id, classe, estilo, texto, marcacao) {
   } else {
     cardBody.setAttribute('class', 'cardbody')
   }
-  if (marcacao == 0) {cardCheck.checked = false} else {cardCheck.checked = true}
+  if (marcacao == 0) { cardCheck.checked = false } else { cardCheck.checked = true }
   cardBody.textContent = texto
   cardHeader.appendChild(cardCheck)
   cardHeader.appendChild(cardOrdem)
@@ -246,14 +210,13 @@ function montaDadosCard(card) {
   card_class = card.getAttribute('class')
   card_style = card.getAttribute('style')
   card_text = card.children[1].textContent
-  if (card.children[0].children[0].checked) {checked = 1} else {checked = 0}
+  if (card.children[0].children[0].checked) { checked = 1 } else { checked = 0 }
   dadosCard = 'card_class=' + card_class + '&card_style=' + card_style + '&card_text=' + card_text + '&board_id=' + consultarAPI('parm', 4) + '&checked=' + checked
   return dadosCard
 }
 
-function newCard(ev) {
-  if (ev.target.id == 'board') {
-    console.log('Novo card')
+function bodyClick(ev) {
+  if (ev.target.tagName == 'BODY') {
     card_text = prompt('Digite o texto do post-it:')
     if (card_text != null) {
       card_class = 'event'
@@ -266,13 +229,12 @@ function newCard(ev) {
   }
   if (ev.target.getAttribute('class') == 'cardordem') {
     card = ev.target.parentElement.parentElement
-    ordem = prompt('Digite a nova ordem')
+    ordem = prompt('Digite a nova ordem', card.children[0].children[1].textContent)
     if (ordem != null) {
       if (parseInt(ordem) > -1 & parseInt(ordem) < 100) {
         console.log('Alterei a ordem')
         card.style.zIndex = parseInt(ordem)
         manterAPI('put', 'card', montaDadosCard(card), card.id.replace("card", ""))
-        card.children[0].children[0].textContent = ordem
         propagaMudanca(card.id.replace('card', ''), 'U')
       } else {
         alert('Digite um valor válido!')
@@ -316,18 +278,18 @@ function newCard(ev) {
     propagaMudanca(card.id.replace('card', ''), 'U')
   }
   if (ev.target.getAttribute('class') == 'cardeditar') {
-    if (ev.target.parentElement.parentElement.getAttribute('class').substring(0, 2) == 'ss') {
+    if (ev.target.parentElement.parentElement.getAttribute('class') == 'listItem') {
       Item = ev.target.parentElement.parentElement
-      texto = prompt('Digite o novo nome do quadro')
+      texto = prompt('Digite o novo nome do quadro', Item.textContent)
       if (texto != null) {
         Item.textContent = texto
-        manterAPI('put', 'board', 'board_name=' + texto, Item.id.replace("bItem", ""))
-        propagaMudanca(0, 'B')
-        document.getElementById('bMenu').setAttribute('hidden', '')
+        manterAPI('put', 'board', 'board_name=' + texto, Item.id.replace("board", ""))
+        propagaMudanca(0, 'board')
+        showList('board')
       }
     } else {
       card = ev.target.parentElement.parentElement
-      texto = prompt('Digite o novo texto')
+      texto = prompt('Digite o novo texto', card.children[1].textContent)
       if (texto != null) {
         console.log('Alterei o texto')
         card.children[1].textContent = texto
@@ -337,26 +299,26 @@ function newCard(ev) {
     }
   }
   if (ev.target.getAttribute('class') == 'cardexcluir') {
-    if (ev.target.parentElement.parentElement.getAttribute('class').substring(0, 2) == 'ss') {
+    if (ev.target.parentElement.parentElement.getAttribute('class') == 'listItem') {
       Item = ev.target.parentElement.parentElement
-      if (Item.id.substring(0, 1) == 's') {
-        manterAPI('delete', 'snap', '', Item.id.replace("ssItem", ""))
-        propagaMudanca(0, 'S')
-        if (consultarAPI('parm', 3) == Item.id.replace("ssItem", "")) {
+      if (Item.parentElement.id == 'snapshotList') {
+        manterAPI('delete', 'snapshot', '', Item.id.replace("snapshot", ""))
+        propagaMudanca(0, 'snapshot')
+        if (consultarAPI('parm', 3) == Item.id.replace("snapshot", "")) {
           manterAPI('put', 'parm', 'parm_value=' + 1, 3)
           propagaMudanca(0, 'AS')
         }
-        document.getElementById('ssMenu').setAttribute('hidden', '')
+        showList('snapshot')
       } else {
         if (confirm('Deseja apagar o quadro e todos os post-its contidos nele')) {
-          manterAPI('delete', 'board', '', Item.id.replace("bItem", ""))
-          manterAPI('delete', 'card-board', '', Item.id.replace("bItem", ""))
-          propagaMudanca(0, 'B')
-          if (consultarAPI('parm', 4) == Item.id.replace("bItem", "")) {
+          manterAPI('delete', 'board', '', Item.id.replace("board", ""))
+          manterAPI('delete', 'card-board', '', Item.id.replace("board", ""))
+          propagaMudanca(0, 'board')
+          if (consultarAPI('parm', 4) == Item.id.replace("board", "")) {
             manterAPI('put', 'parm', 'parm_value=' + 1, 4)
             propagaMudanca(0, 'AS')
           }
-          document.getElementById('bMenu').setAttribute('hidden', '')
+          showList('board')
         }
       }
     } else {
@@ -372,7 +334,7 @@ function newCard(ev) {
 function dragElement(card) {
 
   elementos = [card]
-  
+
   for (i = 2; i < document.body.childElementCount; i++) {
     card = document.body.children[i]
     if (card.children[0].children[0].checked) {

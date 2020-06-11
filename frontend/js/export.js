@@ -1,5 +1,5 @@
-function boardOpen() {
-    arquivo = document.getElementById("fileToLoad").files[0]
+function openFile() {
+    arquivo = document.getElementById("file").files[0]
     if (arquivo != null) {
         board_name = arquivo.name.replace('.json','')
         dadosBoard = 'board_name=' + board_name
@@ -11,7 +11,7 @@ function boardOpen() {
     }
 }
 
-function boardSave() {
+function saveFile() {
     board_name = consultarAPI('board', consultarAPI('parm', 4)).board_name
     board_cards = consultarAPI('card-board', consultarAPI('parm', 4) + '&9999-12-31 23:59:59')
     saveTextAsFile(board_name + '.json', JSON.stringify(board_cards))
@@ -39,7 +39,7 @@ function destroyClickedElement(event) {
 }
 
 function loadFileAsText() {
-    var fileToLoad = document.getElementById("fileToLoad").files[0];
+    var file = document.getElementById("file").files[0];
     var fileReader = new FileReader();
     
     fileReader.onload = function (fileLoadedEvent) {
@@ -57,5 +57,5 @@ function loadFileAsText() {
         propagaMudanca(0, 'AS')
     };
     
-    fileReader.readAsText(fileToLoad, "UTF-8");
+    fileReader.readAsText(file, "UTF-8");
 }
