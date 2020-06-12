@@ -23,9 +23,9 @@ socket.onmessage = function (event) {
             if (i == 0) {
                 document.getElementById('board1').textContent = dados[i].board_name
                 boardControls = document.createElement('div')
-                boardControls.setAttribute('class', 'controles')
+                boardControls.setAttribute('class', 'listItemControl')
                 boardEditar = document.createElement('div')
-                boardEditar.setAttribute('class', 'cardeditar')
+                boardEditar.setAttribute('class', 'edit control')
                 boardControls.appendChild(boardEditar)
                 document.getElementById('board1').appendChild(boardControls)
             } else {

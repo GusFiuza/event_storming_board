@@ -67,11 +67,11 @@ function criaBoard(id, nome) {
   boardItem.setAttribute('onclick', 'itemClick(' + id + ')')
   boardItem.textContent = nome
   boardControls = document.createElement('div')
-  boardControls.setAttribute('class', 'controles')
+  boardControls.setAttribute('class', 'listItemControl')
   boardEditar = document.createElement('div')
-  boardEditar.setAttribute('class', 'cardeditar')
+  boardEditar.setAttribute('class', 'edit control')
   boardExcluir = document.createElement('div')
-  boardExcluir.setAttribute('class', 'cardexcluir')
+  boardExcluir.setAttribute('class', 'delete control')
   boardControls.appendChild(boardEditar)
   boardControls.appendChild(boardExcluir)
   boardItem.appendChild(boardControls)
@@ -87,9 +87,9 @@ function criaSnapshot(id, nome) {
   snapItem.setAttribute('onclick', 'itemClick(' + id + ')')
   snapItem.textContent = nome
   boardControls = document.createElement('div')
-  boardControls.setAttribute('class', 'controles')
+  boardControls.setAttribute('class', 'listItemControl')
   snapExcluir = document.createElement('div')
-  snapExcluir.setAttribute('class', 'cardexcluir')
+  snapExcluir.setAttribute('class', 'delete control')
   boardControls.appendChild(snapExcluir)
   snapItem.appendChild(boardControls)
   snapshotlist = document.getElementById('snapshotList')
@@ -135,9 +135,9 @@ function pageLoad() {
     if (i == 0) {
       document.getElementById('board1').textContent = dados[i].board_name
       boardControls = document.createElement('div')
-      boardControls.setAttribute('class', 'controles')
+      boardControls.setAttribute('class', 'listItemControl')
       boardEditar = document.createElement('div')
-      boardEditar.setAttribute('class', 'cardeditar')
+      boardEditar.setAttribute('class', 'edit control')
       boardControls.appendChild(boardEditar)
       document.getElementById('board1').appendChild(boardControls)
     } else {
@@ -153,14 +153,13 @@ function pageLoad() {
   document.body.style.transform = 'scale(' + novoZoom + ')'
   document.getElementById('toolBar').style.transform = 'scale(' + fator + ')'
   document.getElementById('zoomRate').textContent = parseInt(novoZoom * 100) + '%'
-  classes = ['event', 'command', 'aggregate', 'condition', 'context']
+  classes = ['event card', 'command card', 'aggregate card', 'condition card', 'context card']
   tamanhoCard = ''
 }
 
 function criaCard(id, classe, estilo, texto, marcacao) {
   card = document.createElement('div')
   cardHeader = document.createElement('div')
-  cardTitulo = document.createElement('div')
   cardCheck = document.createElement('input')
   cardOrdem = document.createElement('div')
   cardCopiar = document.createElement('div')
@@ -175,28 +174,26 @@ function criaCard(id, classe, estilo, texto, marcacao) {
   card.setAttribute('onmouseup', 'mouseUp(event)')
   card.setAttribute('onmouseover', 'inclui(event)')
   cardHeader.setAttribute('id', 'card' + id + 'header')
-  cardHeader.setAttribute('class', 'cardheader')
-  cardTitulo.setAttribute('class', 'cardtitle')
-  cardOrdem.setAttribute('class', 'cardordem')
+  cardHeader.setAttribute('class', 'cardHeader')
+  cardOrdem.setAttribute('class', 'order control')
   cardOrdem.textContent = estilo.substring(9, estilo.indexOf('; top'))
   cardCheck.setAttribute('type', 'checkbox')
   cardCheck.setAttribute('onchange', 'checkChange(event)')
-  cardCopiar.setAttribute('class', 'cardduplicar')
-  cardCor.setAttribute('class', 'cardcor')
-  cardEditar.setAttribute('class', 'cardeditar')
+  cardCopiar.setAttribute('class', 'duplicate control')
+  cardCor.setAttribute('class', 'color control')
+  cardEditar.setAttribute('class', 'edit control')
   cardExcluir.setAttribute('id', 'card' + id + 'excluir')
-  cardExcluir.setAttribute('class', 'cardexcluir')
+  cardExcluir.setAttribute('class', 'delete control')
   cardBody.setAttribute('id', 'card' + id + 'body')
-  if (classe == 'context') {
-    cardBody.setAttribute('class', 'cardbodycontext')
+  if (classe == 'context card') {
+    cardBody.setAttribute('class', 'cardBody contextBody')
   } else {
-    cardBody.setAttribute('class', 'cardbody')
+    cardBody.setAttribute('class', 'cardBody')
   }
   if (marcacao == 0) { cardCheck.checked = false } else { cardCheck.checked = true }
   cardBody.textContent = texto
   cardHeader.appendChild(cardCheck)
   cardHeader.appendChild(cardOrdem)
-  cardHeader.appendChild(cardTitulo)
   cardHeader.appendChild(cardCopiar)
   cardHeader.appendChild(cardCor)
   cardHeader.appendChild(cardEditar)
@@ -219,7 +216,7 @@ function bodyClick(ev) {
   if (ev.target.tagName == 'BODY') {
     card_text = prompt('Digite o texto do post-it:')
     if (card_text != null) {
-      card_class = 'event'
+      card_class = 'event card'
       card_style = 'z-index: ' + (document.body.childElementCount - 1) + '; top: ' + ev.clientY + 'px; left:' + ev.clientX + 'px;'
       dadosCard = 'card_class=' + card_class + '&card_style=' + card_style + '&card_text=' + card_text + '&board_id=' + consultarAPI('parm', 4) + '&checked=' + 0
       card_id = manterAPI('post', 'card', dadosCard, 0)
@@ -227,7 +224,7 @@ function bodyClick(ev) {
       propagaMudanca(card_id, 'C')
     }
   }
-  if (ev.target.getAttribute('class') == 'cardordem') {
+  if (ev.target.getAttribute('class') == 'order control') {
     card = ev.target.parentElement.parentElement
     ordem = prompt('Digite a nova ordem', card.children[0].children[1].textContent)
     if (ordem != null) {
@@ -241,7 +238,7 @@ function bodyClick(ev) {
       }
     }
   }
-  if (ev.target.getAttribute('class') == 'cardduplicar') {
+  if (ev.target.getAttribute('class') == 'duplicate control') {
     card = ev.target.parentElement.parentElement
     console.log('Dupliquei o card')
     card_class = card.getAttribute('class')
@@ -261,23 +258,23 @@ function bodyClick(ev) {
     criaCard(card_id, card_class, card_style, card_text, card_check)
     propagaMudanca(card_id, 'C')
   }
-  if (ev.target.getAttribute('class') == 'cardcor') {
+  if (ev.target.getAttribute('class') == 'color control') {
     card = ev.target.parentElement.parentElement
     console.log('Cor do card')
     if (classes.indexOf(card.getAttribute('class')) + 1 == classes.length) {
       card_class = classes[0]
-      card.children[1].setAttribute('class', 'cardbody')
+      card.children[1].setAttribute('class', 'cardBody')
     } else {
       card_class = classes[classes.indexOf(card.getAttribute('class')) + 1]
-      if (card_class == 'context') {
-        card.children[1].setAttribute('class', 'cardbodycontext')
+      if (card_class == 'context card') {
+        card.children[1].setAttribute('class', 'cardBody contextBody')
       }
     }
     card.setAttribute('class', card_class)
     manterAPI('put', 'card', montaDadosCard(card), card.id.replace("card", ""))
     propagaMudanca(card.id.replace('card', ''), 'U')
   }
-  if (ev.target.getAttribute('class') == 'cardeditar') {
+  if (ev.target.getAttribute('class') == 'edit control') {
     if (ev.target.parentElement.parentElement.getAttribute('class') == 'listItem') {
       Item = ev.target.parentElement.parentElement
       texto = prompt('Digite o novo nome do quadro', Item.textContent)
@@ -298,7 +295,7 @@ function bodyClick(ev) {
       }
     }
   }
-  if (ev.target.getAttribute('class') == 'cardexcluir') {
+  if (ev.target.getAttribute('class') == 'delete control') {
     if (ev.target.parentElement.parentElement.getAttribute('class') == 'listItem') {
       Item = ev.target.parentElement.parentElement
       if (Item.parentElement.id == 'snapshotList') {

@@ -16,22 +16,22 @@
 
 <body onclick="bodyClick(event)">    
     <div id="toolBar">
-        <label class="button open" for="file"></label>
+        <label class="button open" for="file" title="Abrir arquivo"></label>
         <input id="file" type="file" onchange="openFile()">
-        <div class="button save" onclick="saveFile()"></div>
-        <div class="button board" onclick="showList('board')"></div>
+        <div class="button save" title="Salvar arquivo" onclick="saveFile()"></div>
+        <div class="button board" title="Selecionar quadro" onclick="showList('board')"></div>
         <div id="boardList" class="list" hidden>
             <div class="listItem" onclick="newItem('board')">Adicionar novo quadro</div>
             <div id=board1 class="listItem" onclick="itemClick(1)"></div>
         </div>
-        <div class="button snapshot" onclick="showList('snapshot')"></div>
+        <div class="button snapshot" title="Selecionar instantâneo" onclick="showList('snapshot')"></div>
         <div id="snapshotList" class="list" hidden>
             <div class="listItem" onclick="newItem('snapshot')">Adicionar novo instantâneo</div>
             <div id=snapshot1 class="listItem" onclick="itemClick(1)"></div>
         </div>
-        <div class="button zoomIn" onclick="zoom('+')"></div>
+        <div class="button zoomIn" title="Aproximar" onclick="zoom('+')"></div>
         <div id="zoomRate" class="zoomScale"></div>
-        <div class="button zoomOut" onclick="zoom('-')"></div>
+        <div class="button zoomOut" title="Afastar" onclick="zoom('-')"></div>
     </div>
 </body>
 <script>pageLoad()</script>
