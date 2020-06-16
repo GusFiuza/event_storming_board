@@ -10,8 +10,9 @@
     <link rel="stylesheet" href="css/index.css">
 </head>
 
-<script src="js/api.js"></script>
-<script src="js/export.js"></script>
+<script src="js/api_integration.js"></script>
+<script src="js/file_integration.js"></script>
+<script src="js/websocket.js"></script>
 <script src="js/index.js"></script>
 
 <body onclick="bodyClick(event)">    
@@ -22,12 +23,10 @@
         <div class="button board" title="Selecionar quadro" onclick="showList('board')"></div>
         <div id="boardList" class="list" hidden>
             <div class="listItem" onclick="newItem('board')">Adicionar novo quadro</div>
-            <div id=board1 class="listItem" onclick="itemClick(1)"></div>
         </div>
         <div class="button snapshot" title="Selecionar instantâneo" onclick="showList('snapshot')"></div>
         <div id="snapshotList" class="list" hidden>
             <div class="listItem" onclick="newItem('snapshot')">Adicionar novo instantâneo</div>
-            <div id=snapshot1 class="listItem" onclick="itemClick(1)"></div>
         </div>
         <div class="button zoomIn" title="Aproximar" onclick="zoom('+')"></div>
         <div id="zoomRate" class="zoomScale"></div>

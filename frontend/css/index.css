@@ -171,12 +171,12 @@ input[type='file'] {
 }
 
 .duplicate {
-    background-image: url("../img/duplicar.png");
+    background-image: url("../img/duplicate.png");
     background-size: 18px;
 }
 
 .color {
-    background-image: url("../img/cor.png");
+    background-image: url("../img/color.png");
     background-size: 20px;
 }
 
