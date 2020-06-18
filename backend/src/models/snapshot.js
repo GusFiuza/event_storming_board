@@ -72,7 +72,7 @@ class snapshot {
     }
 
     altera(id, parm, res) {
-        const sql = `UPDATE snapshot SET snap_name = ?, snap_timestamp = ? WHERE snap_id = ${id}`
+        const sql = `UPDATE snapshot SET snap_name = ? WHERE snap_id = ${id}`
 
         conexao.all(sql, Object.values(parm), (erro, resultado) => {
             if (erro) {

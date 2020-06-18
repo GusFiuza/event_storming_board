@@ -8,9 +8,12 @@ socket.onmessage = function (event) {
     if (action == 'boardView') {
         checkedMark('boardList')
         checkedMark('snapshotList')
-        carregaCards()
+        while (document.body.childElementCount > 2) {document.body.lastChild.remove()}
+        cardsLoad()
     }
     
+// Reavaliar ########################################################################
+
     if (action == 'boardList') {
         boardList = document.getElementById(action)
         while (boardList.childElementCount > 1) {
@@ -18,7 +21,7 @@ socket.onmessage = function (event) {
         }
         boardListItem = dataQuery(action.replace('List',''), 0)
         for (i = 0; i < boardListItem.length; i++) {
-            createBoard(boardListItem[i].board_id, boardListItem[i].board_name)
+            createItem(action.replace('List',''), boardListItem[i].board_id, boardListItem[i].board_name)
         }
         boardList.children[1].children[0].children[1].remove()
         checkedMark(action)
@@ -31,23 +34,19 @@ socket.onmessage = function (event) {
         }
         snapshotListItem = dataQuery(action.replace('List',''), 0)
         for (i = 0; i < snapshotListItem.length; i++) {
-            criaSnapshot(snapshotListItem[i].snap_id, snapshotListItem[i].snap_name)
+            createItem(action.replace('List',''), snapshotListItem[i].snap_id, snapshotListItem[i].snap_name)
         }
-        snapshotList.children[1].children[0].children[0].remove()
+        snapshotList.children[1].children[0].children[1].remove()
         checkedMark(action)
     }
     
     if (action == 'zoomRate') {
-        newZoom = parseFloat(object)
-        factor = 1 / newZoom
-        document.body.style.transform = 'scale(' + newZoom + ')'
-        document.getElementById('toolBar').style.transform = 'scale(' + (factor) + ')'
-        document.getElementById('zoomRate').textContent = parseInt(newZoom * 100) + '%'
+        factor = zoomLoad()
     }
     
     if (action == 'createCard') {
         cardData = dataQuery('card', object)
-        criaCard(cardData.card_id, 
+        createCard(cardData.card_id, 
             cardData.card_class, 
             cardData.card_style, 
             cardData.card_text, 
@@ -57,7 +56,7 @@ socket.onmessage = function (event) {
     if (action == 'updateCard') {
         document.getElementById('card' + object).remove()
         cardData = dataQuery('card', object)
-        criaCard(cardData.card_id, 
+        createCard(cardData.card_id, 
             cardData.card_class, 
             cardData.card_style, 
             cardData.card_text, 

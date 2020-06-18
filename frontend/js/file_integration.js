@@ -4,7 +4,8 @@ function openFile() {
         boardName = file.name.replace('.json','')
         boardData = 'board_name=' + boardName
         boardId = dataChange('post', 'board', boardData, 0)
-        createBoard(boardId, boardName)
+        createItem('board', boardId, boardName)
+        dataChange('put', 'parm', 'parm_value=1', 3)
         dataChange('put', 'parm', 'parm_value=' + boardId, 4)
         loadFileAsText()
         changeBroadcast(0, 'boardList')
