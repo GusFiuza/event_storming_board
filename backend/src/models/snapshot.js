@@ -29,7 +29,7 @@ conexao.all(`CREATE TABLE IF NOT EXISTS snapshot (
 })
 
 class snapshot {
-    lista(res) {
+    read(res) {
         const sql = `SELECT * FROM snapshot;`
 
         conexao.all(sql, (erro, resultado) => {
@@ -41,7 +41,7 @@ class snapshot {
         });
     }
 
-    buscaPorId(id, res) {
+    readById(id, res) {
         const sql = `SELECT snap_name, snap_timestamp FROM snapshot WHERE snap_id=${id}`
 
         conexao.all(sql, (erro, resultado) => {
@@ -53,7 +53,7 @@ class snapshot {
         })
     }
 
-    adiciona(parm, res) {
+    create(parm, res) {
         const sql = 'INSERT INTO snapshot (snap_name, snap_timestamp) VALUES (?, datetime("now"))'
 
         conexao.all(sql, Object.values(parm), (erro, resultado) => {
@@ -71,7 +71,7 @@ class snapshot {
         })
     }
 
-    altera(id, parm, res) {
+    update(id, parm, res) {
         const sql = `UPDATE snapshot SET snap_name = ? WHERE snap_id = ${id}`
 
         conexao.all(sql, Object.values(parm), (erro, resultado) => {
@@ -83,7 +83,7 @@ class snapshot {
         })
     }
 
-    exclui(id, res) {
+    delete(id, res) {
         const sql = `DELETE FROM snapshot WHERE snap_id=${id}`
 
         conexao.all(sql, (erro, resultado) => {

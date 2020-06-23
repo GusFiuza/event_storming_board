@@ -1,5 +1,3 @@
-const http = require('http')
-
 module.exports = app => {
     const ws = new require('ws');
     const wss = new ws.Server({noServer: true});
@@ -22,5 +20,4 @@ module.exports = app => {
     app.get('/ws', (req, res) => {
         wss.handleUpgrade(req, req.socket, Buffer.alloc(0), onSocketConnect);
     })
-
 }
