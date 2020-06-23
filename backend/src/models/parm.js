@@ -45,7 +45,7 @@ conexao.all(`CREATE TABLE IF NOT EXISTS parm (
 })
 
 class parm {
-    lista(res) {
+    read(res) {
         const sql = `SELECT * FROM parm;`
 
         conexao.all(sql, (erro, resultado) => {
@@ -57,7 +57,7 @@ class parm {
         });
     }
 
-    buscaPorId(id, res) {
+    readById(id, res) {
         const sql = `SELECT parm_value FROM parm WHERE parm_id=${id}`
 
         conexao.all(sql, (erro, resultado) => {
@@ -69,7 +69,7 @@ class parm {
         })
     }
 
-    adiciona(parm, res) {
+    create(parm, res) {
         const sql = 'INSERT INTO parm (parm_id, parm_value) VALUES (?, ?)'
 
         conexao.all(sql, Object.values(parm), (erro, resultado) => {
@@ -81,7 +81,7 @@ class parm {
         })
     }
 
-    altera(id, parm, res) {
+    update(id, parm, res) {
         const sql = `UPDATE parm SET parm_value = ? WHERE parm_id = ${id}`
 
         conexao.all(sql, Object.values(parm), (erro, resultado) => {
@@ -93,7 +93,7 @@ class parm {
         })
     }
 
-    exclui(id, res) {
+    delete(id, res) {
         const sql = `DELETE FROM parm WHERE parm_id=${id}`
 
         conexao.all(sql, (erro, resultado) => {

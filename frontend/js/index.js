@@ -32,7 +32,7 @@ function listLoad(type) {
 }
 
 function cardsLoad() {
-  data = dataQuery('card-board', dataQuery('parm', 4) + '&' + dataQuery('snapshot', dataQuery('parm', 3)).snap_timestamp)
+  data = dataQuery('card', '?board=' + dataQuery('parm', 4) + '&lastChange=' + dataQuery('snapshot', dataQuery('parm', 3)).snap_timestamp)
   for (i = 0; i < data.length; i++) {
     createCard(data[i].card_id, data[i].card_class, data[i].card_style, data[i].card_text, data[i].card_check)
   }
@@ -131,7 +131,7 @@ function listItemRemove(ev) {
   if (confirm('Confirme a exclusão do ' + displayType)) {
     dataChange('delete', type, '', item.id.replace(type, ''))
     changeBroadcast(0, item.parentElement.id)
-    if (item.parentElement.id == 'boardList') dataChange('delete', 'card-board', '', item.id.replace("board", ""))
+    if (item.parentElement.id == 'boardList') dataChange('delete', 'card', '', '0?board=' + item.id.replace("board", ""))
     if (dataQuery('parm', parmNumber) == item.id.replace(type, '')) {
       dataChange('put', 'parm', 'parm_value=' + 1, parmNumber)
       changeBroadcast(0, 'boardView')

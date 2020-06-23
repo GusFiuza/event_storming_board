@@ -5,6 +5,10 @@ socket.onmessage = function (event) {
     object = message[0]
     action = message[1]
     
+    if (action == 'users') {
+        document.getElementById('users').textContent = object
+    }
+
     if (action == 'boardView') {
         checkedMark('boardList')
         checkedMark('snapshotList')
@@ -12,31 +16,18 @@ socket.onmessage = function (event) {
         cardsLoad()
     }
     
-// Reavaliar ########################################################################
-
-    if (action == 'boardList') {
-        boardList = document.getElementById(action)
-        while (boardList.childElementCount > 1) {
-            boardList.lastChild.remove()
+    if (action == 'boardList' || action == 'snapshotList') {
+        list = document.getElementById(action)
+        while (list.childElementCount > 1) list.lastChild.remove()
+        listItem = dataQuery(action.replace('List',''), 0)
+        for (i = 0; i < listItem.length; i++) {
+            if (action == 'boardList') {
+                createItem(action.replace('List',''), listItem[i].board_id, listItem[i].board_name)
+            } else {
+                createItem(action.replace('List',''), listItem[i].snap_id, listItem[i].snap_name)
+            }
         }
-        boardListItem = dataQuery(action.replace('List',''), 0)
-        for (i = 0; i < boardListItem.length; i++) {
-            createItem(action.replace('List',''), boardListItem[i].board_id, boardListItem[i].board_name)
-        }
-        boardList.children[1].children[0].children[1].remove()
-        checkedMark(action)
-    }
-    
-    if (action == 'snapshotList') {
-        snapshotList = document.getElementById(action)
-        while (snapshotList.childElementCount > 1) {
-            snapshotList.lastChild.remove()
-        }
-        snapshotListItem = dataQuery(action.replace('List',''), 0)
-        for (i = 0; i < snapshotListItem.length; i++) {
-            createItem(action.replace('List',''), snapshotListItem[i].snap_id, snapshotListItem[i].snap_name)
-        }
-        snapshotList.children[1].children[0].children[1].remove()
+        list.children[1].children[0].children[1].remove()
         checkedMark(action)
     }
     
@@ -76,9 +67,7 @@ function changeBroadcast(object, action) {
 
 function checkedMark(itensList) {
     list = document.getElementById(itensList)
-    for (i = 1; i < list.childElementCount; i++) {
-        list.children[i].setAttribute('style','')
-    }
+    for (i = 1; i < list.childElementCount; i++) list.children[i].setAttribute('style','')
     if (itensList == 'boardList') {parmId = 4} else {parmId = 3}
     document.getElementById(itensList.replace('List','') + dataQuery('parm',parmId)).style.backgroundColor = 'gray'
 }

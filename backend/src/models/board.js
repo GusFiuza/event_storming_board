@@ -26,7 +26,7 @@ conexao.all(`CREATE TABLE IF NOT EXISTS board (
 })
 
 class board {
-    lista(res) {
+    read(res) {
         const sql = `SELECT * FROM board;`
 
         conexao.all(sql, (erro, resultado) => {
@@ -38,7 +38,7 @@ class board {
         });
     }
 
-    buscaPorId(id, res) {
+    readById(id, res) {
         const sql = `SELECT board_name FROM board WHERE board_id=${id}`
 
         conexao.all(sql, (erro, resultado) => {
@@ -50,7 +50,7 @@ class board {
         })
     }
 
-    adiciona(parm, res) {
+    create(parm, res) {
         const sql = 'INSERT INTO board (board_name) VALUES (?);'
 
         conexao.all(sql, Object.values(parm), (erro, resultado) => {
@@ -68,7 +68,7 @@ class board {
         })
     }
 
-    altera(id, parm, res) {
+    update(id, parm, res) {
         const sql = `UPDATE board SET board_name = ? WHERE board_id = ${id}`
 
         conexao.all(sql, Object.values(parm), (erro, resultado) => {
@@ -80,7 +80,7 @@ class board {
         })
     }
 
-    exclui(id, res) {
+    delete(id, res) {
         const sql = `DELETE FROM board WHERE board_id=${id}`
 
         conexao.all(sql, (erro, resultado) => {

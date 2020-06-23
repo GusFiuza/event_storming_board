@@ -117,8 +117,13 @@ conexao.all(`CREATE TABLE IF NOT EXISTS card (
 })
 
 class card {
-    lista(board, time, res) {
-        const sql = `SELECT * FROM card where board_id = ${board} AND last_change <="${time}";`
+    read(board, time, res) {
+        let sql = ''
+        if (board != null) {
+            sql = `SELECT * FROM card where board_id = ${board} AND last_change <="${time}";`
+        } else {
+            sql = `SELECT * FROM card;`
+        }
         console.log(sql)
         conexao.all(sql, (erro, resultado) => {
             if (erro) {
@@ -129,7 +134,7 @@ class card {
         });
     }
 
-    buscaPorId(id, res) {
+    readById(id, res) {
         const sql = `SELECT * FROM card WHERE card_id=${id}`
 
         conexao.all(sql, (erro, resultado) => {
@@ -141,7 +146,7 @@ class card {
         })
     }
 
-    adiciona(card, res) {
+    create(card, res) {
         const sql = 'INSERT INTO card (card_class, card_style, card_text, last_change, board_id, card_check) VALUES (?, ?, ?, datetime("now"), ?, ?)'
 
         conexao.all(sql, Object.values(card), (erro, resultado) => {
@@ -159,7 +164,7 @@ class card {
         })
     }
 
-    altera(id, card, res) {
+    update(id, card, res) {
         const sql = `UPDATE card SET card_class = ?, card_style = ?, card_text = ?, board_id = ?, card_check = ? WHERE card_id = ${id}`
 
         conexao.all(sql, Object.values(card), (erro, resultado) => {
@@ -171,20 +176,13 @@ class card {
         })
     }
 
-    excluiBoard(id, res) {
-        const sql = `DELETE FROM card WHERE board_id=${id}`
-
-        conexao.all(sql, (erro, resultado) => {
-            if (erro) {
-                res.status(400).json(erro)
-            } else {
-                res.status(200).json(resultado)
-            }
-        })
-    }
-
-    exclui(id, res) {
-        const sql = `DELETE FROM card WHERE card_id=${id}`
+    delete(boardId, cardId, res) {
+        let sql = ''
+        if (boardId != null) {
+            sql = `DELETE FROM card WHERE board_id=${boardId}`
+        } else {
+            sql = `DELETE FROM card WHERE card_id=${cardId}`
+        }
 
         conexao.all(sql, (erro, resultado) => {
             if (erro) {

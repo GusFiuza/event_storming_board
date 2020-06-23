@@ -14,7 +14,7 @@ function openFile() {
 
 function saveFile() {
     boardName = dataQuery('board', dataQuery('parm', 4)).board_name
-    boardCards = dataQuery('card-board', dataQuery('parm', 4) + '&9999-12-31 23:59:59')
+    boardCards = dataQuery('card', '?board=' + dataQuery('parm', 4) + '&lastChange=9999-12-31 23:59:59')
     saveTextAsFile(boardName + '.json', JSON.stringify(boardCards))
 }
 
