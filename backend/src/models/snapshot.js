@@ -1,9 +1,9 @@
 const conection = require('../infraestrutura/conection')
 
 conection.all(`CREATE TABLE IF NOT EXISTS snapshot (
-            snap_id INTEGER PRIMARY KEY AUTOINCREMENT,
-            snap_name TEXT NOT NULL,
-            snap_timestamp TEXT NOT NULL);`, (err) => {
+            snapshot_id INTEGER PRIMARY KEY AUTOINCREMENT,
+            snapshot_name TEXT NOT NULL,
+            snapshot_timestamp TEXT NOT NULL);`, (err) => {
     if (err) {
         console.log("Erro na criação da tabela snapshot: " + err)
     } else {
@@ -12,7 +12,7 @@ conection.all(`CREATE TABLE IF NOT EXISTS snapshot (
                 console.log("Erro ao verificar dados na snapshoot: " + err)
             } else {
                 if (resultado[0].quantidade == 0) {
-                    conection.all(`INSERT INTO snapshot (snap_id, snap_name, snap_timestamp)
+                    conection.all(`INSERT INTO snapshot (snapshot_id, snapshot_name, snapshot_timestamp)
                     VALUES
                         (1, 'Todos os post-its', '9999-12-31 23:59:59');`, (err) => {
                         if (err) {
@@ -39,7 +39,7 @@ class snapshot {
     }
 
     readById(id, res) {
-        const sql = `SELECT snap_name, snap_timestamp FROM snapshot WHERE snap_id=${id}`
+        const sql = `SELECT snapshot_name, snapshot_timestamp FROM snapshot WHERE snapshot_id=${id}`
 
         conection.all(sql, (erro, resultado) => {
             if (erro) {
@@ -51,7 +51,7 @@ class snapshot {
     }
 
     create(parm, res) {
-        const sql = 'INSERT INTO snapshot (snap_name, snap_timestamp) VALUES (?, datetime("now"))'
+        const sql = 'INSERT INTO snapshot (snapshot_name, snapshot_timestamp) VALUES (?, datetime("now"))'
 
         conection.all(sql, Object.values(parm), (erro, resultado) => {
             if (erro) {
@@ -69,7 +69,7 @@ class snapshot {
     }
 
     update(id, parm, res) {
-        const sql = `UPDATE snapshot SET snap_name = ? WHERE snap_id = ${id}`
+        const sql = `UPDATE snapshot SET snapshot_name = ? WHERE snap_id = ${id}`
 
         conection.all(sql, Object.values(parm), (erro, resultado) => {
             if (erro) {
@@ -81,7 +81,7 @@ class snapshot {
     }
 
     delete(id, res) {
-        const sql = `DELETE FROM snapshot WHERE snap_id=${id}`
+        const sql = `DELETE FROM snapshot WHERE snapshot_id=${id}`
 
         conection.all(sql, (erro, resultado) => {
             if (erro) {

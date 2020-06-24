@@ -24,7 +24,7 @@ socket.onmessage = function (event) {
             if (action == 'boardList') {
                 createItem(action.replace('List',''), listItem[i].board_id, listItem[i].board_name)
             } else {
-                createItem(action.replace('List',''), listItem[i].snap_id, listItem[i].snap_name)
+                createItem(action.replace('List',''), listItem[i].snapshot_id, listItem[i].snapshot_name)
             }
         }
         list.children[1].children[0].children[1].remove()

@@ -24,7 +24,7 @@ function listLoad(type) {
     }
   } else {
     for (i = 0; i < listItens.length; i++) {
-      createItem(type, listItens[i].snap_id, listItens[i].snap_name)
+      createItem(type, listItens[i].snapshot_id, listItens[i].snapshot_name)
     }
   }
   document.getElementById(type + 'List').children[1].children[0].children[1].remove()
@@ -32,7 +32,7 @@ function listLoad(type) {
 }
 
 function cardsLoad() {
-  data = dataQuery('card', '?board=' + dataQuery('parm', 4) + '&lastChange=' + dataQuery('snapshot', dataQuery('parm', 3)).snap_timestamp)
+  data = dataQuery('card', '?board=' + dataQuery('parm', 4) + '&lastChange=' + dataQuery('snapshot', dataQuery('parm', 3)).snapshot_timestamp)
   for (i = 0; i < data.length; i++) {
     createCard(data[i].card_id, data[i].card_class, data[i].card_style, data[i].card_text, data[i].card_check)
   }
