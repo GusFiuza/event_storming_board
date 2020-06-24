@@ -1,20 +1,17 @@
-const conexao = require('../infraestrutura/conexao')
+const conection = require('../infraestrutura/conection')
 
-conexao.all(`CREATE TABLE IF NOT EXISTS board (
-    board_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    board_name TEXT NOT NULL);`, (err) => {
+conection.all(`CREATE TABLE IF NOT EXISTS board (
+            board_id INTEGER PRIMARY KEY AUTOINCREMENT,
+            board_name TEXT NOT NULL);`, (err) => {
     if (err) {
         console.log("Erro na criação da tabela board: " + err)
     } else {
-        console.log('Tabela board criada com sucesso')
-        conexao.all(`SELECT count(*) as quantidade FROM board;`, (err, resultado) => {
+        conection.all(`SELECT count(*) as quantidade FROM board;`, (err, resultado) => {
             if (err) {
                 console.log("Erro ao verificar dados na board: " + err)
             } else {
-                console.log('Avaliando existência de boards de teste')
                 if (resultado[0].quantidade == 0) {
-                    console.log('Cadastrando board inicial')
-                    conexao.all(`INSERT INTO board (board_name) VALUES ('quadro');`, (err) => {
+                    conection.all(`INSERT INTO board (board_name) VALUES ('Quadro 1');`, (err) => {
                         if (err) {
                             console.log("Erro no cadastro de board: " + err)
                         }
@@ -26,38 +23,13 @@ conexao.all(`CREATE TABLE IF NOT EXISTS board (
 })
 
 class board {
-    read(res) {
-        const sql = `SELECT * FROM board;`
-
-        conexao.all(sql, (erro, resultado) => {
-            if (erro) {
-                res.status(400).json(erro)
-            } else {
-                res.status(200).json(resultado)
-            }
-        });
-    }
-
-    readById(id, res) {
-        const sql = `SELECT board_name FROM board WHERE board_id=${id}`
-
-        conexao.all(sql, (erro, resultado) => {
-            if (erro) {
-                res.status(400).json(erro)
-            } else {
-                res.status(200).json(resultado[0])
-            }
-        })
-    }
-
     create(parm, res) {
         const sql = 'INSERT INTO board (board_name) VALUES (?);'
-
-        conexao.all(sql, Object.values(parm), (erro, resultado) => {
+        conection.all(sql, Object.values(parm), (erro, resultado) => {
             if (erro) {
                 res.status(400).json(erro)
             } else {
-                conexao.all("SELECT seq FROM sqlite_sequence WHERE name = 'board';", (erro, resultado) => {
+                conection.all("SELECT seq FROM sqlite_sequence WHERE name = 'board';", (erro, resultado) => {
                     if (erro) {
                         res.status(400).json(erro)
                     } else {
@@ -68,10 +40,31 @@ class board {
         })
     }
 
+    read(res) {
+        const sql = `SELECT * FROM board;`
+        conection.all(sql, (erro, resultado) => {
+            if (erro) {
+                res.status(400).json(erro)
+            } else {
+                res.status(200).json(resultado)
+            }
+        });
+    }
+
+    readById(id, res) {
+        const sql = `SELECT board_name FROM board WHERE board_id=${id}`
+        conection.all(sql, (erro, resultado) => {
+            if (erro) {
+                res.status(400).json(erro)
+            } else {
+                res.status(200).json(resultado[0])
+            }
+        })
+    }
+
     update(id, parm, res) {
         const sql = `UPDATE board SET board_name = ? WHERE board_id = ${id}`
-
-        conexao.all(sql, Object.values(parm), (erro, resultado) => {
+        conection.all(sql, Object.values(parm), (erro, resultado) => {
             if (erro) {
                 res.status(400).json(erro)
             } else {
@@ -82,8 +75,7 @@ class board {
 
     delete(id, res) {
         const sql = `DELETE FROM board WHERE board_id=${id}`
-
-        conexao.all(sql, (erro, resultado) => {
+        conection.all(sql, (erro, resultado) => {
             if (erro) {
                 res.status(400).json(erro)
             } else {
