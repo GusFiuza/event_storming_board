@@ -1,0 +1,39 @@
+<!doctype html>
+
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Quadro digital para post-its</title>
+    <link rel="icon" type="image/png" href="img/storm.png" />
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/room.css">
+</head>
+
+<script src="js/api_integration.js"></script>
+<script src="js/file_integration.js"></script>
+<script src="js/websocket.js"></script>
+<script src="js/room.js"></script>
+
+<body onclick="bodyClick(event)">    
+    <div id="toolBar">
+        <label class="button open" for="file" title="Abrir arquivo"></label>
+        <input id="file" type="file" onchange="openFile()">
+        <div class="button save" title="Salvar arquivo" onclick="saveFile()"></div>
+        <div class="button board" title="Selecionar quadro" onclick="showList('board')"></div>
+        <div id="boardList" class="list" hidden>
+            <div class="listItem" onclick="newListItem('board')">Adicionar novo quadro</div>
+        </div>
+        <div class="button snapshot" title="Selecionar instantâneo" onclick="showList('snapshot')"></div>
+        <div id="snapshotList" class="list" hidden>
+            <div class="listItem" onclick="newListItem('snapshot')">Adicionar novo instantâneo</div>
+        </div>
+        <div class="button zoomIn" title="Aproximar" onclick="zoom('+')"></div>
+        <div id="zoomRate" class="zoomScale"></div>
+        <div class="button zoomOut" title="Afastar" onclick="zoom('-')"></div>
+        <div id="users" class="users" title="Usuários online"></div>
+    </div>
+</body>
+<script>pageLoad()</script>
+
+</html>

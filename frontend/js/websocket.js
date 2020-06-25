@@ -1,4 +1,4 @@
-socket = new WebSocket(`ws://${location.host}:8002/ws`)
+socket = new WebSocket(`ws://${location.host}:8002/ws?${document.URL.split('?')[1]}`)
 
 socket.onmessage = function (event) {
     message = event.data.split('-')

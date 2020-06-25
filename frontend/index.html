@@ -7,33 +7,56 @@
     <title>Quadro digital para post-its</title>
     <link rel="icon" type="image/png" href="img/storm.png" />
     <link rel="stylesheet" href="css/reset.css">
-    <link rel="stylesheet" href="css/index.css">
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cabin+Sketch&display=swap" rel="stylesheet">
+    <!-- <link rel="stylesheet" href="css/index.css"> -->
 </head>
 
-<script src="js/api_integration.js"></script>
-<script src="js/file_integration.js"></script>
-<script src="js/websocket.js"></script>
-<script src="js/index.js"></script>
-
-<body onclick="bodyClick(event)">    
-    <div id="toolBar">
-        <label class="button open" for="file" title="Abrir arquivo"></label>
-        <input id="file" type="file" onchange="openFile()">
-        <div class="button save" title="Salvar arquivo" onclick="saveFile()"></div>
-        <div class="button board" title="Selecionar quadro" onclick="showList('board')"></div>
-        <div id="boardList" class="list" hidden>
-            <div class="listItem" onclick="newListItem('board')">Adicionar novo quadro</div>
+<body style="display: flex; justify-content: center; align-items: center; flex-direction: column; width: 100vw; height: 100vh;">    
+    <div style="font-family: 'Cabin Sketch', cursive; font-size: 3rem;">Quadro digital para post-its</div>
+    <div style="margin-top: 10px;
+        margin-bottom: 10px; 
+        width: 150px; 
+        height: 100px; 
+        border: 1px solid black;">
+        <div style="display: flex; justify-content: flex-start; align-items: flex-start; flex-wrap: wrap; margin: 5px; width: 139px; height: 89px; border: 1px solid black;">
+            <div style="margin-top: 1.5px; margin-left: 1.5px; width: 27.5px; height: 20px; background-color: lightgreen;"></div>
+            <div style="margin-top: 1.5px; margin-left: 1.5px; width: 27.5px; height: 20px; background-color: rgb(255, 255, 159);"></div>
+            <div style="margin-top: 1.5px; margin-left: 1.5px; width: 27.5px; height: 20px; background-color: pink;"></div>
+            <div style="margin-top: 1.5px; margin-left: 1.5px; width: 27.5px; height: 20px; background-color: lightblue;"></div>
+            <div style="margin-top: 1.5px; margin-left: 1.5px; width: 27.5px; height: 20px; background-color: lightgreen;"></div>
+            <div style="margin-top: 1.5px; margin-left: 1.5px; width: 27.5px; height: 20px; "></div>
+            <div style="margin-top: 1.5px; margin-left: 1.5px; width: 27.5px; height: 20px; background-color: pink;"></div>
+            <div style="margin-top: 1.5px; margin-left: 1.5px; width: 27.5px; height: 20px; "></div>
+            <div style="margin-top: 1.5px; margin-left: 1.5px; width: 27.5px; height: 20px; background-color: lightgreen;"></div>
+            <div style="margin-top: 1.5px; margin-left: 1.5px; width: 27.5px; height: 20px; background-color: rgb(255, 255, 159);"></div>
+            <div style="margin-top: 1.5px; margin-left: 1.5px; width: 27.5px; height: 20px; background-color: pink;"></div>
+            <div style="margin-top: 1.5px; margin-left: 1.5px; width: 27.5px; height: 20px; background-color: lightblue;"></div>
+            <div style="margin-top: 1.5px; margin-left: 1.5px; width: 27.5px; height: 20px; background-color: lightgreen;"></div>
+            <div style="margin-top: 1.5px; margin-left: 1.5px; width: 27.5px; height: 20px; background-color: rgb(255, 255, 159);"></div>
+            <div style="margin-top: 1.5px; margin-left: 1.5px; width: 27.5px; height: 20px; background-color: pink;"></div>
+            <div style="margin-top: 1.5px; margin-left: 1.5px; width: 27.5px; height: 20px; "></div>
         </div>
-        <div class="button snapshot" title="Selecionar instantâneo" onclick="showList('snapshot')"></div>
-        <div id="snapshotList" class="list" hidden>
-            <div class="listItem" onclick="newListItem('snapshot')">Adicionar novo instantâneo</div>
-        </div>
-        <div class="button zoomIn" title="Aproximar" onclick="zoom('+')"></div>
-        <div id="zoomRate" class="zoomScale"></div>
-        <div class="button zoomOut" title="Afastar" onclick="zoom('-')"></div>
-        <div id="users" class="users" title="Usuários online"></div>
     </div>
+    <div style="margin-top: 10px; font-family: 'Comfortaa', cursive; font-size: 1.2rem;">Digite o código de uma sala e clique em acessar</div>
+    <input id="roomId" style="width: 60vw; height: 2.5rem; margin-top: 10px; font-family: 'Comfortaa', cursive; font-size: 1.2rem; text-align: center;" type="text" placeholder="123456" onkeypress="roomAccessEnter(event)">
+    <input style="width: 20vw; height: 6vh; margin-top: 10px; font-family: 'Comfortaa', cursive; font-size: 1rem;" type="button" value="Acessar" onclick="roomAccess()">
+    <div style="margin-top: 20px; font-family: 'Comfortaa', cursive; font-size: 1rem;">Para acessar sua própria sala, basta clicar em acessar sem preencher nenhum código</div>
 </body>
-<script>pageLoad()</script>
+
+<script type="text/javascript" > var userip; </script>
+<script type="text/javascript" src="https://l2.io/ip.js?var=userip"></script>
+<script>
+    function roomAccessEnter(ev) {
+        if (ev.keyCode == 13) roomAccess()
+    }
+
+    function roomAccess() {
+        if (document.getElementById('roomId').value != '') {
+            roomId = document.getElementById('roomId').value
+        } else {roomId = userip}
+        window.location.href = `http://${location.host}/room.html?roomid=` + roomId
+    }
+</script>
 
 </html>
