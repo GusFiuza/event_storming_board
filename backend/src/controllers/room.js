@@ -7,7 +7,8 @@ module.exports = app => {
     }) 
 
     app.get('/room', (req, res) => {
-        Room.read(res)
+        const owner = req.query.roomOwner
+        Room.read(owner, res)
     })
 
     app.get('/room/:id', (req, res) => {

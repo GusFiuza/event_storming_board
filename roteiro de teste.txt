@@ -1,0 +1,43 @@
+- Abrir aplicação (aba 1)
+- Abrir aplicação (aba 2)
+- Abrir aplicação (aba 3)
+- Acessar aba 1
+- Preencher 1 no campo de código
+- Teclar ENTER -> Mensagem de erro (Nenhuma sala encontrada para o código digitado.)
+- Apagar campo de código
+- Teclar ENTER -> Sala criada. Sala acessada
+- Acessar aba 2
+- Clicar no botão Acessar -> Sala acessada. Usuários online 2
+- Acessar aba 3
+- Preencher o código da sala da aba 1
+- Teclar ENTER -> Sala acessada. Usuários online 3
+- Posicionar o cursor do mouse sobre o botão pasta -> Mensagem (Abrir arquivo)
+- Posicionar o cursor do mouse sobre o botão disquete -> Mensagem (Salvar arquivo)
+- Posicionar o cursor do mouse sobre o botão quadro -> Mensagem (Selecionar quadro)
+- Posicionar o cursor do mouse sobre o botão lupa mais -> Mensagem (Aproximar)
+- Posicionar o cursor do mouse sobre o botão valor percentual -> Mensagem (Zoom atual)
+- Posicionar o cursor do mouse sobre o botão lupa menos -> Mensagem (Afastar)
+- Posicionar o cursor do mouse sobre o botão usuário -> Mensagem (Usuários online)
+- Clique na página (Área em branco)
+- Digite a palavra Olá
+- Tecle ENTER -> post-it amarelo criado
+- Acessar aba 2 -> Quadro atualizado
+- Clique na página (Área em branco)
+- Clique em cancelar -> Nada acontece
+- Clique no 1 do post-it
+- Digite 0
+- Tecle ENTER -> Número no post-it atualizado
+- Acessar aba 1 -> Quadro atualizado
+- Clique no ícone (duplicar) do post-it -> post-it duplicado
+- Acessar aba 2 -> Quadro atualizado
+- Clique no ícone (cores) do post-it -> cor do post-it muda para verde
+- Acessar aba 3 -> Quadro atualizado
+- Clique no ícone (lápis) do post-it verde
+- Digite a palavra mundo
+- Clique em cancelar -> Nada acontece
+- Clique no ícone (lápis) do post-it verde
+- Digite a palavra mundo
+- Clique em OK -> Texto do post-it verde atualizado
+- Acessar aba 2 -> Quadro atualizado
+- Clique no ícone (lixeira) do post-it verde -> Post-it apagado
+- Acessar aba 1 -> Quadro atualizado

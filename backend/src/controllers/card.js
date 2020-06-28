@@ -8,8 +8,7 @@ module.exports = app => {
 
     app.get('/card', (req, res) => {
         const board = req.query.board
-        const time = req.query.lastChange
-        Card.read(board, time, res)
+        Card.read(board, res)
     })
 
     app.get('/card/:id', (req, res) => {

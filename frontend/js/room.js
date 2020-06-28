@@ -3,8 +3,8 @@ function pageLoad() {
   classes = ['event card', 'command card', 'aggregate card', 'condition card', 'context card']
   cardSize = ''
   factor = zoomLoad()
+  roomId = document.URL.split('?')[1].split('=')[1]
   listLoad('board')
-  listLoad('snapshot')
   cardsLoad()
 }
 
@@ -18,21 +18,15 @@ function zoomLoad() {
 
 function listLoad(type) {
   listItens = dataQuery(type, 0)
-  if (type == 'board') {
-    for (i = 0; i < listItens.length; i++) {
-      createItem(type, listItens[i].board_id, listItens[i].board_name)
-    }
-  } else {
-    for (i = 0; i < listItens.length; i++) {
-      createItem(type, listItens[i].snapshot_id, listItens[i].snapshot_name)
-    }
+  for (i = 0; i < listItens.length; i++) {
+    createItem(type, listItens[i].board_id, listItens[i].board_name)
   }
   document.getElementById(type + 'List').children[1].children[0].children[1].remove()
   checkedMark(type + 'List')
 }
 
 function cardsLoad() {
-  data = dataQuery('card', '?board=' + dataQuery('parm', 4) + '&lastChange=' + dataQuery('snapshot', dataQuery('parm', 3)).snapshot_timestamp)
+  data = dataQuery('card', '?board=' + dataQuery('parm', 4))
   for (i = 0; i < data.length; i++) {
     createCard(data[i].card_id, data[i].card_class, data[i].card_style, data[i].card_text, data[i].card_check)
   }
@@ -82,8 +76,7 @@ function showList(type) {
 }
 
 function newListItem(type) {
-  if (type == 'board') {item = 'quadro'} else {item = 'instantâneo'}
-  itemName = prompt('Digite um nome para seu ' + item + ':')
+  itemName = prompt('Digite um nome para seu quadro:')
   if (itemName != null) {
     itemData = 'name=' + itemName
     itemId = dataChange('post', type, itemData, 0)
@@ -94,23 +87,17 @@ function newListItem(type) {
 }
 
 function listItemClick(id) {
-  if (event.target.parentElement.id == 'boardList') {
-    dataChange('put', 'parm', 'parm_value=1', 3)
+  if (window.event.target.getAttribute('class') == 'listItem') {
     dataChange('put', 'parm', 'parm_value=' + id, 4)
     showList('board')
+    changeBroadcast(event.target.id, 'boardView')
   }
-  if (event.target.parentElement.id == 'snapshotList') {
-    dataChange('put', 'parm', 'parm_value=' + id, 3)
-    showList('snapshot')
-  }
-  changeBroadcast(0, 'boardView')
 }
 
 function listItemTextChange(ev) {
   item = ev.target.parentElement.parentElement
   type = item.parentElement.id.replace('List','')
-  if (type == 'snapshot') {displayType = 'quadro'} else {displayType = 'instantâneo'}
-  text = prompt('Digite o novo nome do ' + displayType, item.textContent)
+  text = prompt('Digite o novo nome do quadro', item.textContent)
   if (text != null & text != '') {
     dataChange('put', type, 'listItem_name=' + text, item.id.replace(type, ''))
     changeBroadcast(0, item.parentElement.id)
@@ -121,20 +108,14 @@ function listItemTextChange(ev) {
 function listItemRemove(ev) {
   item = ev.target.parentElement.parentElement
   type = item.parentElement.id.replace('List','')
-  if (type == 'snapshot') {
-    displayType = 'instantâneo'
-    parmNumber = 3
-  } else {
-    displayType = 'quadro e todos os post-its contidos nele'
-    parmNumber = 4
-  }
-  if (confirm('Confirme a exclusão do ' + displayType)) {
+  if (confirm('Confirme a exclusão do quadro e todos os post-its contidos nele')) {
     dataChange('delete', type, '', item.id.replace(type, ''))
-    changeBroadcast(0, item.parentElement.id)
-    if (item.parentElement.id == 'boardList') dataChange('delete', 'card', '', '0?board=' + item.id.replace("board", ""))
-    if (dataQuery('parm', parmNumber) == item.id.replace(type, '')) {
-      dataChange('put', 'parm', 'parm_value=' + 1, parmNumber)
-      changeBroadcast(0, 'boardView')
+    dataChange('delete', 'card', '', '0?board=' + item.id.replace("board", ""))
+    if (dataQuery('parm', 4) == item.id.replace(type, '')) {
+      dataChange('put', 'parm', 'parm_value=' + 1, 4)
+      changeBroadcast(1, 'boardView')
+    } else {
+      changeBroadcast(0, item.parentElement.id)
     }
   }
   showList(type)
@@ -291,7 +272,7 @@ function turnOnCardMove(card) {
 }
 
 // Elements creation
-function createItem(type, id, name) {
+function createItem(type, id, name, check) {
   item = document.createElement('div')
   item.setAttribute('id', type + id)
   item.setAttribute('class', 'listItem')
@@ -306,6 +287,11 @@ function createItem(type, id, name) {
   itemControl.appendChild(itemEdit)
   itemControl.appendChild(itemDelete)
   item.appendChild(itemControl)
+  if (check == 1) {
+    item.style.backgroundColor = 'gray'
+  } else {
+    item.style.backgroundColor = 'lightgray'
+  }
   list = document.getElementById(type + 'List')
   list.appendChild(item)
   list.setAttribute('hidden', '')

@@ -11,24 +11,14 @@ socket.onmessage = function (event) {
 
     if (action == 'boardView') {
         checkedMark('boardList')
-        checkedMark('snapshotList')
         while (document.body.childElementCount > 2) {document.body.lastChild.remove()}
         cardsLoad()
     }
     
-    if (action == 'boardList' || action == 'snapshotList') {
+    if (action == 'boardList') {
         list = document.getElementById(action)
         while (list.childElementCount > 1) list.lastChild.remove()
-        listItem = dataQuery(action.replace('List',''), 0)
-        for (i = 0; i < listItem.length; i++) {
-            if (action == 'boardList') {
-                createItem(action.replace('List',''), listItem[i].board_id, listItem[i].board_name)
-            } else {
-                createItem(action.replace('List',''), listItem[i].snapshot_id, listItem[i].snapshot_name)
-            }
-        }
-        list.children[1].children[0].children[1].remove()
-        checkedMark(action)
+        listLoad(action.replace('List',''))
     }
     
     if (action == 'zoomRate') {

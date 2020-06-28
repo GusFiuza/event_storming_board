@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
     <title>Quadro digital para post-its</title>
-    <link rel="icon" type="image/png" href="img/storm.png" />
+    <link rel="icon" type="image/png" href="img/logo.png" />
     <link rel="stylesheet" href="css/reset.css">
     <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Cabin+Sketch&display=swap" rel="stylesheet">
@@ -40,12 +40,14 @@
     </div>
     <div style="margin-top: 10px; font-family: 'Comfortaa', cursive; font-size: 1.2rem;">Digite o código de uma sala e clique em acessar</div>
     <input id="roomId" style="width: 60vw; height: 2.5rem; margin-top: 10px; font-family: 'Comfortaa', cursive; font-size: 1.2rem; text-align: center;" type="text" placeholder="123456" onkeypress="roomAccessEnter(event)">
+    <div id="message" hidden style="margin-top: 2px; font-family: 'Comfortaa', cursive; font-size: 1rem; color: red;"></div>
     <input style="width: 20vw; height: 6vh; margin-top: 10px; font-family: 'Comfortaa', cursive; font-size: 1rem;" type="button" value="Acessar" onclick="roomAccess()">
     <div style="margin-top: 20px; font-family: 'Comfortaa', cursive; font-size: 1rem;">Para acessar sua própria sala, basta clicar em acessar sem preencher nenhum código</div>
 </body>
 
 <script type="text/javascript" > var userip; </script>
 <script type="text/javascript" src="https://l2.io/ip.js?var=userip"></script>
+<script type="text/javascript" src="js/api_integration.js"></script>
 <script>
     function roomAccessEnter(ev) {
         if (ev.keyCode == 13) roomAccess()
@@ -54,9 +56,31 @@
     function roomAccess() {
         if (document.getElementById('roomId').value != '') {
             roomId = document.getElementById('roomId').value
-        } else {roomId = userip}
-        window.location.href = `http://${location.host}/room.html?roomid=` + roomId
+            roomData = dataQuery('room',parseInt(roomId))
+            if (roomData == '') {
+                document.getElementById('message').removeAttribute('hidden')
+                document.getElementById('message').textContent = 'Nenhuma sala encontrada para o código digitado.'
+            } else {
+                window.location.href = `http://${location.host}/room.html?roomid=` + roomId
+            }
+        } else {
+            roomOwner = userip
+            roomData = dataQuery('room',`?roomOwner=${roomOwner}`)
+            if (roomData == '') {
+                roomId = parseInt(Math.random()*1000000)
+                roomData = `room_id=${roomId}&room_owner=${roomOwner}`
+                if (dataChange('post','room',roomData,0) == '') {
+                    window.location.href = `http://${location.host}/room.html?roomid=` + roomId
+                } else {
+                    document.getElementById('message').removeAttribute('hidden')
+                    document.getElementById('message').textContent = 'Erro na criação da sua sala. Tente novamente.'
+                }
+            } else {
+                window.location.href = `http://${location.host}/room.html?roomid=` + roomData[0].room_id
+            }
+        }
     }
+
 </script>
 
 </html>

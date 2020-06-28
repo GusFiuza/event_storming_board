@@ -16,11 +16,6 @@ conection.all(`CREATE TABLE IF NOT EXISTS parm (
                             console.log("Erro no cadastro do parâmetro 1: " + err)
                         }
                     })
-                    conection.all(`INSERT INTO parm (parm_id, parm_value) VALUES (3, 1);`, (err) => {
-                        if (err) {
-                            console.log("Erro no cadastro do parâmetro 3: " + err)
-                        }
-                    })
                     conection.all(`INSERT INTO parm (parm_id, parm_value) VALUES (4, 1);`, (err) => {
                         if (err) {
                             console.log("Erro no cadastro do parâmetro 4: " + err)
