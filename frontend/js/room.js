@@ -113,6 +113,7 @@ function listItemRemove(ev) {
     dataChange('delete', 'card', '', '0?board=' + item.id.replace("board", ""))
     if (dataQuery('parm', 4) == item.id.replace(type, '')) {
       dataChange('put', 'parm', 'parm_value=' + 1, 4)
+      changeBroadcast(1, 'boardList')
       changeBroadcast(1, 'boardView')
     } else {
       changeBroadcast(0, item.parentElement.id)

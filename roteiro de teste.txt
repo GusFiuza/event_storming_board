@@ -41,3 +41,61 @@
 - Acessar aba 2 -> Quadro atualizado
 - Clique no ícone (lixeira) do post-it verde -> Post-it apagado
 - Acessar aba 1 -> Quadro atualizado
+- Posicione o cursor do mouse sobre o post-it, fora da área de ícones -> cursor do mouse é alterado para (cursor mover)
+- Clique e arraste o post-it -> post-it movimentado
+- Acessar aba 2 -> Quadro atualizado
+- Posicione o cursor do mouse no canto inferior direito do post-it -> cursor do mouse é alterado para (cursor redimensionar)
+- Clique e arraste -> post-it redimensionado
+- Acessar aba 3 -> Quadro atualizado
+- Clique no ícone (duplicar) do post-it -> post-it duplicado
+- Clique no checkbox do primeiro post-it -> checkbox marcado
+- Posicione o cursor do mouse sobre o outro post-it, fora da área de ícones -> cursor do mouse é alterado para (cursor mover)
+- Clique e arraste o post-it -> ambos os post-its movimentados
+- Acessar aba 2 -> Quadro atualizado
+- Clique no botão (Salvar arquivo) -> Arquivo json salvo (O processo de salvamento pode variar de um navegador para outro)
+- Clique no botão (Abrir arquivo)
+- Selecione o arquivo json
+- Clique em abrir -> Novo quadro criado com o post-its do arquivo
+- Clique no botão (Selecionar quadro) -> Existem 2 quadros e o segundo está selecionado
+- Acessar aba 1 -> Quadro atualizado
+- Clique no botão (Selecionar quadro)
+- Clique no ícone lápis do quadro selecionado
+- Digite Quadro 2
+- Tecle ENTER -> Nome do quadro alterado
+- Acessar aba 2 -> Quadro atualizado
+- Clique no botão (Selecionar quadro)
+- Clique no ícone lápis do primeiro quadro
+- Clique no botão Cancelar -> Nada acontece
+- Clique no ícone lixeira do post-it número 2 -> post-it excluído
+- Acessar aba 3 -> Quadro atualizado
+- Clique no botão (Selecionar quadro)
+- Clique no Quadro 1 -> Quadro alterado
+- Acessar aba 2 -> Quadro atualizado
+- Clique no botão (Selecionar quadro)
+- Clique no ícone lápis do primeiro quadro
+- Digite Meu quadro
+- Tecle ENTER - Nome do primeiro quadro alterado
+- Acessar aba 1 -> Quadro atualizado
+- Clique no botão (Selecionar quadro)
+- Clique no ícone lixeira do segundo quadro
+- Tecle ENTER - Quadro 2 excluído e todos os post-it nele incluídos
+- Acessar aba 2 -> Quadro atualizado
+- Clique no botão (Selecionar quadro)
+- Clique em Adicionar novo quadro
+- Digite Outro quadro
+- Tecle ENTER -> Novo quadro criado
+- Acessar aba 3 -> Quadro atualizado
+- Clique no botão (Selecionar quadro)
+- Clique no Outro quadro -> Quadro alterado
+- Acessar aba 2 -> Quadro atualizado
+- Clique no botão (Selecionar quadro)
+- Clique no ícone lixeira do Outro quadro
+- Tecle ENTER - Outro quadro excluído e o Quadro 1 selecionado
+- Acessar aba 1 -> Quadro atualizado
+- Clique no botão Aproximar -> Zoom e informação de zoom atual atualizados
+- Acessar aba 2 -> Quadro atualizado
+- Clique no botão Afastar -> Zoom e informação de zoom atual atualizados
+- Acessar aba 3 -> Quadro atualizado
+- Feche a aba 3 -> Aba 2 selecionada e usuários online atualizados
+- Acessar aba 1 -> Quadro atualizado
+- Feche a aba 2 -> Usuários online atualizados
