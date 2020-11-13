@@ -1,12 +1,4 @@
-- Abrir aplicação (aba 1)
-- Abrir aplicação (aba 2)
-- Abrir aplicação (aba 3)
-- Acessar aba 1
-- Preencher 1 no campo de código
-- Teclar ENTER -> Mensagem de erro (Nenhuma sala encontrada para o código digitado.)
-- Apagar campo de código
-- Teclar ENTER -> Sala criada. Sala acessada
-- Acessar aba 2
+- Abrir aplicação
 - Clicar no botão Acessar -> Sala acessada. Usuários online 2
 - Acessar aba 3
 - Preencher o código da sala da aba 1

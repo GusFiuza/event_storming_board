@@ -1,0 +1,211 @@
+{
+  "id": "91b99816-500b-42ae-b0f7-2f89f0745223",
+  "version": "2.0",
+  "name": "digital_board",
+  "url": "http://localhost",
+  "tests": [{
+    "id": "de1fe018-42f7-44a4-aaac-f07875fd0faa",
+    "name": "Open site",
+    "commands": [{
+      "id": "fb0826c9-7490-4754-b64d-228fa16af76f",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "3cfe8b18-378f-4900-8939-ea59fac68cc2",
+      "comment": "",
+      "command": "assertElementPresent",
+      "target": "id=title",
+      "targets": [
+        ["id=title", "id"],
+        ["css=#title", "css:finder"],
+        ["xpath=//div[@id='title']", "xpath:attributes"],
+        ["xpath=//div[3]", "xpath:position"],
+        ["xpath=//div[contains(.,'Quadro digital para post-its')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "c6541ffa-02ff-4b88-9371-d287db9aa215",
+      "comment": "",
+      "command": "assertElementPresent",
+      "target": "id=logo",
+      "targets": [
+        ["id=logo", "id"],
+        ["css=#logo", "css:finder"],
+        ["xpath=//div[@id='logo']", "xpath:attributes"],
+        ["xpath=//div[5]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "ac8eb50b-ce35-4b46-b790-37cb4f35d915",
+      "comment": "",
+      "command": "assertElementPresent",
+      "target": "id=orientation",
+      "targets": [
+        ["id=orientation", "id"],
+        ["css=#orientation", "css:finder"],
+        ["xpath=//div[@id='orientation']", "xpath:attributes"],
+        ["xpath=//body/div[7]", "xpath:position"],
+        ["xpath=//div[contains(.,'Digite o código de uma sala e clique em acessar')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "fa0cd9cd-54b6-43b7-91fc-1cb5b93967b8",
+      "comment": "",
+      "command": "assertElementPresent",
+      "target": "id=roomId",
+      "targets": [
+        ["id=roomId", "id"],
+        ["css=#roomId", "css:finder"],
+        ["xpath=//input[@id='roomId']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "a7ee0f6e-8e19-4656-b4f3-185db54729ea",
+      "comment": "",
+      "command": "assertElementPresent",
+      "target": "id=access",
+      "targets": [
+        ["id=access", "id"],
+        ["css=#access", "css:finder"],
+        ["xpath=//input[@id='access']", "xpath:attributes"],
+        ["xpath=//input[2]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "034bcf6c-c69f-4787-87b3-336c0c6aa8a3",
+      "comment": "",
+      "command": "assertElementPresent",
+      "target": "id=compementation",
+      "targets": [
+        ["id=compementation", "id"],
+        ["css=#compementation", "css:finder"],
+        ["xpath=//div[@id='compementation']", "xpath:attributes"],
+        ["xpath=//body/div[12]", "xpath:position"],
+        ["xpath=//div[contains(.,'Para acessar sua própria sala, basta clicar em acessar sem preencher nenhum código')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }]
+  }, {
+    "id": "0175dc6e-0f55-4002-a17f-397bab4d5769",
+    "name": "Access room with wrong id",
+    "commands": [{
+      "id": "0c6b4f91-46f7-481b-ba44-430eadf7f92c",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "5ea75526-ca40-4daa-ae26-bd7531ebe0b6",
+      "comment": "",
+      "command": "click",
+      "target": "id=roomId",
+      "targets": [
+        ["id=roomId", "id"],
+        ["css=#roomId", "css:finder"],
+        ["xpath=//input[@id='roomId']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "70f6db4a-d4fe-4855-9b6c-38cf5ad90a41",
+      "comment": "",
+      "command": "type",
+      "target": "id=roomId",
+      "targets": [
+        ["id=roomId", "id"],
+        ["css=#roomId", "css:finder"],
+        ["xpath=//input[@id='roomId']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "1"
+    }, {
+      "id": "165d026d-41e0-4b20-9d46-db36d4b6886b",
+      "comment": "",
+      "command": "sendKeys",
+      "target": "id=roomId",
+      "targets": [
+        ["id=roomId", "id"],
+        ["css=#roomId", "css:finder"],
+        ["xpath=//input[@id='roomId']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "${KEY_ENTER}"
+    }, {
+      "id": "cd79a3a8-f89c-4ef0-8a9c-76d014131bb4",
+      "comment": "",
+      "command": "assertText",
+      "target": "id=message",
+      "targets": [
+        ["id=message", "id"],
+        ["css=#message", "css:finder"],
+        ["xpath=//div[@id='message']", "xpath:attributes"],
+        ["xpath=//body/div[6]", "xpath:position"],
+        ["xpath=//div[contains(.,'Nenhuma sala encontrada para o código digitado.')]", "xpath:innerText"]
+      ],
+      "value": "Nenhuma sala encontrada para o código digitado."
+    }]
+  }, {
+    "id": "be8cf95a-6be8-4f52-b6f5-44f38a5e4906",
+    "name": "Access room with sucess",
+    "commands": [{
+      "id": "083b683b-5400-4aa3-a548-8ec7557a31bd",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "6ea6aaa1-50b2-43cd-bbac-7ff4aaf3af31",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1200x665",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "538f277e-6f5f-4e2c-8aab-aca091a37427",
+      "comment": "",
+      "command": "click",
+      "target": "id=access",
+      "targets": [
+        ["id=access", "id"],
+        ["css=#access", "css:finder"],
+        ["xpath=//input[@id='access']", "xpath:attributes"],
+        ["xpath=//input[2]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "a385a262-1276-4c9e-bea2-a8f6607fc7bc",
+      "comment": "",
+      "command": "assertElementPresent",
+      "target": "id=toolBar",
+      "targets": [
+        ["css=.open", "css:finder"],
+        ["xpath=//div[@id='toolBar']/label", "xpath:idRelative"],
+        ["xpath=//label", "xpath:position"]
+      ],
+      "value": ""
+    }]
+  }],
+  "suites": [{
+    "id": "e03b9bb9-9ba7-49bd-b38a-df56422f65b5",
+    "name": "Unit tests",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["be8cf95a-6be8-4f52-b6f5-44f38a5e4906", "0175dc6e-0f55-4002-a17f-397bab4d5769", "de1fe018-42f7-44a4-aaac-f07875fd0faa"]
+  }, {
+    "id": "b782402d-d594-4cc2-a551-87f61fc16a72",
+    "name": "Websocket test",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": []
+  }],
+  "urls": ["http://localhost/"],
+  "plugins": []
+}

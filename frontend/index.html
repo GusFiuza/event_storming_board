@@ -13,8 +13,8 @@
 </head>
 
 <body style="display: flex; justify-content: center; align-items: center; flex-direction: column; width: 100vw; height: 100vh;">    
-    <div style="font-family: 'Cabin Sketch', cursive; font-size: 3rem;">Quadro digital para post-its</div>
-    <div style="margin-top: 10px;
+    <div id="title" style="font-family: 'Cabin Sketch', cursive; font-size: 3rem;">Quadro digital para post-its</div>
+    <div id="logo" style="margin-top: 10px;
         margin-bottom: 10px; 
         width: 150px; 
         height: 100px; 
@@ -38,11 +38,11 @@
             <div style="margin-top: 1.5px; margin-left: 1.5px; width: 27.5px; height: 20px; "></div>
         </div>
     </div>
-    <div style="margin-top: 10px; font-family: 'Comfortaa', cursive; font-size: 1.2rem;">Digite o código de uma sala e clique em acessar</div>
+    <div id="orientation" style="margin-top: 10px; font-family: 'Comfortaa', cursive; font-size: 1.2rem;">Digite o código de uma sala e clique em acessar</div>
     <input id="roomId" style="width: 60vw; height: 2.5rem; margin-top: 10px; font-family: 'Comfortaa', cursive; font-size: 1.2rem; text-align: center;" type="text" placeholder="123456" onkeypress="roomAccessEnter(event)">
     <div id="message" hidden style="margin-top: 2px; font-family: 'Comfortaa', cursive; font-size: 1rem; color: red;"></div>
-    <input style="width: 20vw; height: 6vh; margin-top: 10px; font-family: 'Comfortaa', cursive; font-size: 1rem;" type="button" value="Acessar" onclick="roomAccess()">
-    <div style="margin-top: 20px; font-family: 'Comfortaa', cursive; font-size: 1rem;">Para acessar sua própria sala, basta clicar em acessar sem preencher nenhum código</div>
+    <input id="access" style="width: 20vw; height: 6vh; margin-top: 10px; font-family: 'Comfortaa', cursive; font-size: 1rem;" type="button" value="Acessar" onclick="roomAccess()">
+    <div id="compementation" style="margin-top: 20px; font-family: 'Comfortaa', cursive; font-size: 1rem;">Para acessar sua própria sala, basta clicar em acessar sem preencher nenhum código</div>
 </body>
 
 <script type="text/javascript" > var userip; </script>
