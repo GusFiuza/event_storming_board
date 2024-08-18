@@ -15,7 +15,7 @@
     "cors": "^2.8.5",
     "express": "^4.19.2",
     "sqlite3": "^5.1.7",
-    "ws": "^7.4.6"
+    "ws": "^7.5.10"
   },
   "devDependencies": {
     "nodemon": "^2.0.20"
