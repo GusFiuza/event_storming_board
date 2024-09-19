@@ -10,7 +10,7 @@
   "author": "Gustavo Fiuza",
   "license": "ISC",
   "dependencies": {
-    "body-parser": "^1.20.1",
+    "body-parser": "^1.20.3",
     "consign": "^0.1.6",
     "cors": "^2.8.5",
     "express": "^4.21.0",
